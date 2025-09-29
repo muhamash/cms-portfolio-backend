@@ -96,6 +96,14 @@ const config = {
                 "fromEnvVar": null,
                 "value": "darwin-arm64",
                 "native": true
+            },
+            {
+                "fromEnvVar": null,
+                "value": "rhel-openssl-3.0.x"
+            },
+            {
+                "fromEnvVar": null,
+                "value": "debian-openssl-3.0.x"
             }
         ],
         "previewFeatures": [],
@@ -103,7 +111,7 @@ const config = {
         "isCustomOutput": true
     },
     "relativeEnvPaths": {
-        "rootEnvPath": null,
+        "rootEnvPath": "../../../.env",
         "schemaEnvPath": "../../../.env"
     },
     "relativePath": "../../../prisma",
@@ -122,8 +130,8 @@ const config = {
             }
         }
     },
-    "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int     @id @default(autoincrement())\n  email    String  @unique\n  name     String?\n  password String\n}\n",
-    "inlineSchemaHash": "497ac86f7decfd1e214cc6cf986e1c1783e81736a333fd7f2ce2e6faf2c0a5e2",
+    "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int     @id @default(autoincrement())\n  email    String  @unique\n  name     String?\n  password String\n}\n",
+    "inlineSchemaHash": "a2985275a5f92c8a4203cbfcbba2fa709c9fb1cddba2e91cfe926477fdbf3fa1",
     "copyEngine": true
 };
 const fs = require('fs');
@@ -154,6 +162,12 @@ Object.assign(exports, Prisma);
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
 path.join(process.cwd(), "src/generated/prisma/libquery_engine-darwin-arm64.dylib.node");
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node");
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node");
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/prisma/schema.prisma");
