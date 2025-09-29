@@ -1,6 +1,8 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application } from "express";
+import { globalErrorResponse } from './middleware/globalError.middleware';
+import { globalNotFoundResponse } from './middleware/globalNotfound.middleware';
 import { homeRouter } from './module/home/home.route';
 
 const app: Application = express();
@@ -14,6 +16,10 @@ app.use( cors( {
 } ) );
 
 app.use( "/", homeRouter );
+
+
+app.use( globalNotFoundResponse )
+app.use( globalErrorResponse )
 
 
 export default app;
