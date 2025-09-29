@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.globalErrorResponse = void 0;
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const App_error_1 = require("../../config/errors/App.error");
+const prisma_1 = require("../../generated/prisma");
 const util_middleware_1 = require("../utils/util.middleware");
 const globalErrorResponse = (error, req, res, next) => {
     let statusCode = http_status_codes_1.default.BAD_REQUEST;
@@ -39,6 +40,13 @@ const globalErrorResponse = (error, req, res, next) => {
             errors: customIssues.length ? customIssues : fieldIssues,
             ...(process.env.NODE_ENV === "development" && { stack: zodError.stack }),
         });
+    }
+    // Handle Prisma unique constraint error
+    else if (error instanceof prisma_1.Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002") {
+        const targetField = error.meta?.target?.join(", ") || "field";
+        statusCode = http_status_codes_1.default.CONFLICT;
+        message = `Duplicate value for unique field(s): ${targetField}`;
     }
     // Handle custom AppError
     else if (error instanceof App_error_1.AppError) {

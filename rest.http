@@ -1,3 +1,35 @@
 
-GET http://localhost:3000
-Content-Type: application/json
+# GET http://localhost:3000
+# Content-Type: application/json
+
+# POST http://localhost:3000/v1/blogs/create-blog
+# Content-Type: application/json
+
+# {
+#   "title": "How AI is Changing Web Development oka?",
+#   "content": "Artificial Intelligence is revolutionizing web development by enabling smarter tools, better automation, and personalized user experiences. In this article, we explore how AI is integrated into modern frameworks, SaaS platforms, and development workflows.",
+#   "image": "https://example.com/blog/ai-webdev.png",
+#   "tags": ["AI", "Web Development", "SaaS", "JavaScript"]
+# }
+
+# GET http://localhost:3000/v1/blogs/get-blog/1
+# Content-Type: application/json
+
+
+# GET http://localhost:3000/v1/blogs/all-blogs
+# Content-Type: application/json
+
+# PATCH  http://localhost:3000/v1/blogs/update-blog/1
+# Content-Type: application/json
+
+# {
+#     "tags": [
+#       "IA",
+#       "Web Development",
+#       "JavaScript"
+#     ],
+#     "title": "How AI is Changing Web Development changed?"
+# }
+
+# DELETE  http://localhost:3000/v1/blogs/delete-blog/5
+# Content-Type: application/json

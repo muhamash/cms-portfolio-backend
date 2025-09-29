@@ -9,6 +9,7 @@ const express_1 = __importDefault(require("express"));
 const globalError_middleware_1 = require("./middleware/globalError.middleware");
 const globalNotfound_middleware_1 = require("./middleware/globalNotfound.middleware");
 const home_route_1 = require("./module/home/home.route");
+const service_route_1 = require("./routes/service.route");
 const app = (0, express_1.default)();
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
@@ -17,6 +18,7 @@ app.use((0, cors_1.default)({
     // credentials: true
 }));
 app.use("/", home_route_1.homeRouter);
+app.use("/v1", service_route_1.servicesRouter);
 app.use(globalNotfound_middleware_1.globalNotFoundResponse);
 app.use(globalError_middleware_1.globalErrorResponse);
 exports.default = app;

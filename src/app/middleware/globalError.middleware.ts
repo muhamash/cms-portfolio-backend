@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { AppError } from "../../config/errors/App.error";
+import { Prisma } from "../../generated/prisma";
 import { ErrorResponsePayload } from "../utils/type.util";
 import { isZodError, parseZodError } from "../utils/util.middleware";
 
@@ -77,6 +78,15 @@ export const globalErrorResponse = (
   }
 
 
+  // Handle Prisma unique constraint error
+  else if (
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2002"
+  ) {
+    const targetField = (error.meta?.target as string[])?.join(", ") || "field";
+    statusCode = httpStatus.CONFLICT;
+    message = `Duplicate value for unique field(s): ${targetField}`;
+  }
   // Handle custom AppError
   else if (error instanceof AppError) {
     statusCode = error.statusCode;
