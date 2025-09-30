@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from 'http-status-codes';
 import { AppError } from "../../../config/errors/App.error";
 import { asyncHandler, responseFunction } from "../../utils/controller.util";
-import { createProjectService, getProjectByIdService } from "./project.service";
-
+import { createProjectService, deleteProjectService, getAllProjectsService, getProjectByIdService, updateProjectByIdService } from "./project.service";
 
 
 export const createProject = asyncHandler( async ( req: Request, res: Response ) =>
@@ -39,4 +38,76 @@ export const getProjectById = asyncHandler( async ( req: Request, res: Response 
         statusCode: httpStatus.OK,
         data: getProject
     })
-})
+} )
+
+export const updateProjectById = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
+
+    if ( !id )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
+    }
+
+    const updatedProject = await updateProjectByIdService( id, req.body );
+
+    responseFunction( res, {
+        message: "Updated the target!",
+        statusCode: httpStatus.OK,
+        data: updatedProject
+    })
+} )
+
+export const deleteProject = asyncHandler( async ( req: Request, res: Response ) =>
+{
+
+    const id = req.params.id;
+
+    if ( !id )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
+    }
+
+    const deleteProject = await deleteProjectService(id)
+
+    if ( !deleteProject )
+    {
+        throw new AppError( httpStatus.CONFLICT, "Unable to delete project!!" )
+    }
+        
+    responseFunction( res, {
+        message: "Blog deleted",
+        statusCode: httpStatus.ACCEPTED,
+        data: deleteProject
+    } )
+} );
+
+export const getAllProjects = asyncHandler( async ( req: Request, res: Response ) =>
+{
+
+    const query = req.query as Record<string, string>;
+
+    const projects = await getAllProjectsService( query )
+
+    if ( !projects )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Unable to get all projects!!" )
+    }
+
+    if ( projects.data?.length === 0 )
+    {
+        responseFunction( res, {
+            message: "projects are empty!",
+            statusCode: httpStatus.NOT_FOUND,
+            data: []
+        } )
+
+        return
+    }
+        
+    responseFunction( res, {
+        message: "Get all projects",
+        statusCode: httpStatus.OK,
+        data: projects
+    } )
+} );

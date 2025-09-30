@@ -24,12 +24,11 @@ export const getAllBlogsService = async ( query?: Record<string, string> ) =>
     } );
 
     return builder
-        .fields( [ "id", "title", "content", "slug", "tags", "image", "createdAt" ] )
+        .fields( [ "id", "title", "content", "slug", "tags", "image", "createdAt", "updatedAt" ] )
         .sort()
         .pagination()
         .build();
 };
-
 
 export const createBlogService = async ( payload: BlogTypes ) =>
 {
@@ -64,14 +63,13 @@ export const createBlogService = async ( payload: BlogTypes ) =>
     return createdBlog
 };
 
-
 export const getBlogByIdService = async ( id: string ) =>
 {
     const numericId = Number( id );
 
     if ( isNaN( numericId ) )
     {
-        throw new AppError( httpStatus.BAD_REQUEST, "Project ID must be a valid number." );
+        throw new AppError( httpStatus.BAD_REQUEST, " ID must be a valid number." );
     }
 
     
@@ -100,7 +98,7 @@ export const updateBlogService = async (
 
     if ( isNaN( numericId ) )
     {
-        throw new AppError( httpStatus.BAD_REQUEST, "Project ID must be a valid number." );
+        throw new AppError( httpStatus.BAD_REQUEST, " ID must be a valid number." );
     }
 
     
@@ -140,7 +138,7 @@ export const updateBlogService = async (
 
     if ( !updatedBlog )
     {
-        throw new AppError( httpStatus.BAD_REQUEST, "Failed to update the blog!" );
+        throw new AppError( httpStatus.NOT_MODIFIED, "Failed to update the blog!" );
     }
 
     return updatedBlog;
@@ -153,7 +151,7 @@ export const deleteBlogService = async ( id: string ) =>
 
     if ( isNaN( numericId ) )
     {
-        throw new AppError( httpStatus.BAD_REQUEST, "Project ID must be a valid number." );
+        throw new AppError( httpStatus.BAD_REQUEST, " ID must be a valid number." );
     }
 
     

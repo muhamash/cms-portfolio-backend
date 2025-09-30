@@ -56,7 +56,7 @@ export const getAllBlogs = asyncHandler( async ( req: Request, res: Response ) =
     {
         responseFunction( res, {
             message: "Blogs are empty!",
-            statusCode: httpStatus.OK,
+            statusCode: httpStatus.NOT_FOUND,
             data: []
         } )
 

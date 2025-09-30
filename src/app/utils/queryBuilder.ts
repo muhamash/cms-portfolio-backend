@@ -1,3 +1,4 @@
+
 export interface QueryBuilderOptions<T> {
   model: T;
   searchableFields?: string[];
@@ -30,8 +31,8 @@ export class PrismaQueryBuilder<
   private select: any = {};
   private skip = 0;
   private take = 10;
-  private orderBy: Prisma.SortOrderInput = {};
-  private where: Prisma.WhereInput = {};
+  private orderBy: any = {};
+  private where: any = {};
 
   constructor(options: QueryBuilderOptions<T>) {
     this.model = options.model;

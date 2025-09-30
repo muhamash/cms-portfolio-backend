@@ -36,12 +36,11 @@
 # Content-Type: application/json
 
 
-
 # GET http://localhost:3000/v1/blogs/all-blogs?limit=5&sortBy=title&sortOrder=asc&search=oka
 # Content-Type: application/json
 
-GET http://localhost:3000/v1/blogs/all-blogs?search=dev
-Content-Type: application/json
+# GET http://localhost:3000/v1/blogs/all-blogs?search=dev
+# Content-Type: application/json
 
 # GET http://localhost:3000/v1/blogs/all-blogs?page=2&limit=2
 # Content-Type: application/json
@@ -89,3 +88,18 @@ Content-Type: application/json
 
 # GET  http://localhost:3000/v1/projects/get-project/11sadas
 # Content-Type: application/json
+
+
+GET  http://localhost:3000/v1/projects/all-projects?search=asd&sortBy=title
+Content-Type: application/json
+
+# DELETE   http://localhost:3000/v1/projects/delete-project/2
+# Content-Type: application/json
+
+
+# PATCH  http://localhost:3000/v1/projects/update-project/5
+# Content-Type: application/json
+
+# {
+#   "title": "asd okaasdasdasasdsad"
+# }

@@ -38,7 +38,12 @@ exports.getAllBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Unable to get all blogs!!");
     }
     if (blogs.data?.length === 0) {
-        throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Blogs are empty!");
+        (0, controller_util_1.responseFunction)(res, {
+            message: "Blogs are empty!",
+            statusCode: http_status_codes_1.default.NOT_FOUND,
+            data: []
+        });
+        return;
     }
     (0, controller_util_1.responseFunction)(res, {
         message: "Get all blogs",

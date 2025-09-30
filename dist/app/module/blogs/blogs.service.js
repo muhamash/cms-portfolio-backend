@@ -14,20 +14,21 @@ const getAllBlogsService = async (query) => {
     const builder = new queryBuilder_1.PrismaQueryBuilder({
         model: getPrisma_1.myPrisma.blog,
         searchableFields: blog_constants_1.BLOG_SEARCHABLE_FIELDS,
+        filterableFields: blog_constants_1.BLOG_FILTERABLE_FIELDS,
+        arrayFields: blog_constants_1.BLOG_ARRAY_FIELDS,
         excludeFields: blog_constants_1.BLOG_EXCLUDED_FIELDS,
         search: query?.search,
         sortBy: query?.sortBy || blog_constants_1.BLOG_DEFAULT_SORT_FIELD,
         sortOrder: query?.sortOrder || blog_constants_1.BLOG_DEFAULT_SORT_ORDER,
         page: query?.page ? Number(query.page) : blog_constants_1.BLOG_DEFAULT_PAGE,
         limit: query?.limit ? Number(query.limit) : blog_constants_1.BLOG_DEFAULT_LIMIT,
+        filters: query || {},
     });
-    const result = await builder
-        .fields(["id", "title", "content", "slug", "tags", "image", "createdAt"])
+    return builder
+        .fields(["id", "title", "content", "slug", "tags", "image", "createdAt", "updatedAt"])
         .sort()
         .pagination()
         .build();
-    // console.log( result );
-    return result;
 };
 exports.getAllBlogsService = getAllBlogsService;
 const createBlogService = async (payload) => {
@@ -58,7 +59,7 @@ exports.createBlogService = createBlogService;
 const getBlogByIdService = async (id) => {
     const numericId = Number(id);
     if (isNaN(numericId)) {
-        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, "Project ID must be a valid number.");
+        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, " ID must be a valid number.");
     }
     const getBlog = await getPrisma_1.myPrisma.blog.findUnique({
         where: {
@@ -75,7 +76,7 @@ exports.getBlogByIdService = getBlogByIdService;
 const updateBlogService = async (id, payload) => {
     const numericId = Number(id);
     if (isNaN(numericId)) {
-        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, "Project ID must be a valid number.");
+        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, " ID must be a valid number.");
     }
     // Fetch the existing blog
     const existingBlog = await getPrisma_1.myPrisma.blog.findUnique({
@@ -103,7 +104,7 @@ const updateBlogService = async (id, payload) => {
         },
     });
     if (!updatedBlog) {
-        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, "Failed to update the blog!");
+        throw new App_error_1.AppError(http_status_codes_1.default.NOT_MODIFIED, "Failed to update the blog!");
     }
     return updatedBlog;
 };
@@ -111,7 +112,7 @@ exports.updateBlogService = updateBlogService;
 const deleteBlogService = async (id) => {
     const numericId = Number(id);
     if (isNaN(numericId)) {
-        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, "Project ID must be a valid number.");
+        throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, " ID must be a valid number.");
     }
     const existingBlog = await getPrisma_1.myPrisma.blog.findUnique({
         where: { id: Number(id) },

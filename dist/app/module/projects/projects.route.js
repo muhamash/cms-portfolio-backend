@@ -8,3 +8,6 @@ const projects_validation_1 = require("./projects.validation");
 exports.projectsRoutes = (0, express_1.Router)();
 exports.projectsRoutes.post("/create-project", (0, validateRequest_middleware_1.validateRequest)(projects_validation_1.createProjectSchema), projects_controller_1.createProject);
 exports.projectsRoutes.get("/get-project/:id", projects_controller_1.getProjectById);
+exports.projectsRoutes.patch("/update-project/:id", (0, validateRequest_middleware_1.validateRequest)(projects_validation_1.updateProjectSchema), projects_controller_1.updateProjectById);
+exports.projectsRoutes.delete("/delete-project/:id", projects_controller_1.deleteProject);
+exports.projectsRoutes.get("/all-projects", projects_controller_1.getAllProjects);
