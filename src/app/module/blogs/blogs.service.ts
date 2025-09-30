@@ -68,6 +68,14 @@ export const createBlogService = async ( payload: BlogTypes ) =>
 
 export const getBlogByIdService = async ( id: string ) =>
 {
+    const numericId = Number( id );
+
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, "Project ID must be a valid number." );
+    }
+
+    
     const getBlog = await myPrisma.blog.findUnique( {
         where: {
             id: Number( id )
@@ -77,11 +85,11 @@ export const getBlogByIdService = async ( id: string ) =>
     // console.log(getBlog)
     if ( !getBlog )
     {
-        throw new AppError(httpStatus.NOT_FOUND, "Blog not found")
+        throw new AppError( httpStatus.NOT_FOUND, "Blog not found" )
     }
 
     return getBlog;
-}
+};
 
 
 export const updateBlogService = async (
@@ -89,6 +97,14 @@ export const updateBlogService = async (
     payload: UpdateBlogTypes
 ) =>
 {
+    const numericId = Number( id );
+
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, "Project ID must be a valid number." );
+    }
+
+    
     // Fetch the existing blog
     const existingBlog = await myPrisma.blog.findUnique( {
         where: { id: Number( id ) },
@@ -134,6 +150,14 @@ export const updateBlogService = async (
 
 export const deleteBlogService = async ( id: string ) =>
 {
+    const numericId = Number( id );
+
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, "Project ID must be a valid number." );
+    }
+
+    
     const existingBlog = await myPrisma.blog.findUnique( {
         where: { id: Number( id ) },
     } );

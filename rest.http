@@ -51,3 +51,32 @@
 
 # DELETE  http://localhost:3000/v1/blogs/delete-blog/5
 # Content-Type: application/json
+
+# {
+#   "title": "AI Blog Generator",
+#   "description": "A full-stack app that generates blogs using AI and provides SEO-optimized drafts.",
+#   "image": "https://example.com/project-image.png",
+#   "slug": "ai-blog-generator",
+#   "tags": ["AI", "Next.js", "Prisma", "PostgreSQL"],
+#   "githubLink": "https://github.com/username/ai-blog-generator",
+#   "liveLink": "https://ai-blog-generator.vercel.app/"
+# }
+
+
+
+# POST  http://localhost:3000/v1/projects/create-project
+# Content-Type: application/json
+
+# {
+#   "title": "IA Blog Generator",
+#   "description": "A full-stack app that generates blogs using AI and provides SEO-optimized drafts.",
+#   "image": "https://example.com/project-image.png",
+#   "slug": "ai-blog-generator",
+#   "tags": ["AI", "Next.js", "Prisma", "PostgreSQL"],
+#   "githubLink": "https://github.com/username/ai-blog-generatora",
+#   "liveLink": "https://ai-blog-generator.vercel.appa/"
+# }
+
+
+# GET  http://localhost:3000/v1/projects/get-project/11sadas
+# Content-Type: application/json

@@ -21,6 +21,9 @@ exports.createBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
 });
 exports.getBlogById = (0, controller_util_1.asyncHandler)(async (req, res) => {
     const id = req.params.id;
+    if (!id) {
+        throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Id not provided!!");
+    }
     const blog = await (0, blogs_service_1.getBlogByIdService)(id);
     (0, controller_util_1.responseFunction)(res, {
         message: "Found a blog",
@@ -34,6 +37,9 @@ exports.getAllBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
     if (!blogs) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Unable to get all blogs!!");
     }
+    if (blogs.data?.length === 0) {
+        throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Blogs are empty!");
+    }
     (0, controller_util_1.responseFunction)(res, {
         message: "Get all blogs",
         statusCode: http_status_codes_1.default.OK,
@@ -42,6 +48,9 @@ exports.getAllBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
 });
 exports.updateBlog = (0, controller_util_1.asyncHandler)(async (req, res) => {
     const id = req.params.id;
+    if (!id) {
+        throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Id not provided!!");
+    }
     const updatedBlog = await (0, blogs_service_1.updateBlogService)(id, req.body);
     (0, controller_util_1.responseFunction)(res, {
         message: "Blog updated successfully",
@@ -51,6 +60,9 @@ exports.updateBlog = (0, controller_util_1.asyncHandler)(async (req, res) => {
 });
 exports.deleteBlog = (0, controller_util_1.asyncHandler)(async (req, res) => {
     const id = req.params.id;
+    if (!id) {
+        throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Id not provided!!");
+    }
     const deleteABlog = await (0, blogs_service_1.deleteBlogService)(id);
     if (!deleteABlog) {
         throw new App_error_1.AppError(http_status_codes_1.default.CONFLICT, "Unable to delete blog!!");

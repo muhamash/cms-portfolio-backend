@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.projectsRoutes = void 0;
+const express_1 = require("express");
+const validateRequest_middleware_1 = require("../../middleware/validateRequest.middleware");
+const projects_controller_1 = require("./projects.controller");
+const projects_validation_1 = require("./projects.validation");
+exports.projectsRoutes = (0, express_1.Router)();
+exports.projectsRoutes.post("/create-project", (0, validateRequest_middleware_1.validateRequest)(projects_validation_1.createProjectSchema), projects_controller_1.createProject);
+exports.projectsRoutes.get("/get-project/:id", projects_controller_1.getProjectById);

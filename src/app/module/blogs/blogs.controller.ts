@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import httpStatus from 'http-status-codes';
-import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
 import { asyncHandler, responseFunction } from "../../utils/controller.util";
 import { createBlogService, deleteBlogService, getAllBlogsService, getBlogByIdService, updateBlogService } from "./blogs.service";
@@ -26,6 +25,11 @@ export const getBlogById = asyncHandler( async ( req: Request, res: Response ) =
 {
     const id = req.params.id;
 
+    if ( !id )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
+    }
+
     const blog = await getBlogByIdService( id );
 
         
@@ -47,6 +51,11 @@ export const getAllBlogs = asyncHandler( async ( req: Request, res: Response ) =
     {
         throw new AppError( httpStatus.NOT_FOUND, "Unable to get all blogs!!" )
     }
+
+    if ( blogs.data?.length === 0 )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Blogs are empty!" )
+    }
         
     responseFunction( res, {
         message: "Get all blogs",
@@ -59,6 +68,11 @@ export const updateBlog = asyncHandler( async ( req: Request, res: Response ) =>
 {
 
     const id = req.params.id;
+
+    if ( !id )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
+    }
 
     const updatedBlog = await updateBlogService(id, req.body)
         
@@ -73,6 +87,11 @@ export const deleteBlog = asyncHandler( async ( req: Request, res: Response ) =>
 {
 
     const id = req.params.id;
+
+    if ( !id )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
+    }
 
     const deleteABlog = await deleteBlogService(id)
 
