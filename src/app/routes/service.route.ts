@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { blogsRoutes } from "../module/blogs/blogs.routes";
+import { blogsRoutes } from "../module/blogs/blogs.route";
 
 
 

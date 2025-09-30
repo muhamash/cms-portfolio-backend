@@ -31,3 +31,14 @@ export interface ErrorResponsePayload {
     path?: string[];
   }>;
 }
+
+export interface QueryBuilderOptions<T> {
+  model: T;
+  searchableFields?: string[];
+  excludeFields?: string[];
+  search?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+}

@@ -3,11 +3,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBlogService = exports.updateBlogService = exports.getBlogByIdService = exports.createBlogService = void 0;
+exports.deleteBlogService = exports.updateBlogService = exports.getBlogByIdService = exports.createBlogService = exports.getAllBlogsService = void 0;
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const slugify_1 = __importDefault(require("slugify"));
 const getPrisma_1 = require("../../../config/db/getPrisma");
 const App_error_1 = require("../../../config/errors/App.error");
+const queryBuilder_1 = require("../../utils/queryBuilder");
+const blog_constants_1 = require("./blog.constants");
+const getAllBlogsService = async (query) => {
+    const builder = new queryBuilder_1.PrismaQueryBuilder({
+        model: getPrisma_1.myPrisma.blog,
+        searchableFields: blog_constants_1.BLOG_SEARCHABLE_FIELDS,
+        excludeFields: blog_constants_1.BLOG_EXCLUDED_FIELDS,
+        search: query?.search,
+        sortBy: query?.sortBy || blog_constants_1.BLOG_DEFAULT_SORT_FIELD,
+        sortOrder: query?.sortOrder || blog_constants_1.BLOG_DEFAULT_SORT_ORDER,
+        page: query?.page ? Number(query.page) : blog_constants_1.BLOG_DEFAULT_PAGE,
+        limit: query?.limit ? Number(query.limit) : blog_constants_1.BLOG_DEFAULT_LIMIT,
+    });
+    const result = await builder
+        .fields(["id", "title", "content", "slug", "tags", "image", "createdAt"])
+        .sort()
+        .pagination()
+        .build();
+    // console.log( result );
+    return result;
+};
+exports.getAllBlogsService = getAllBlogsService;
 const createBlogService = async (payload) => {
     let slug = (0, slugify_1.default)(payload.title, {
         lower: true,

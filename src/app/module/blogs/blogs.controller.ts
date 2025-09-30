@@ -3,7 +3,7 @@ import httpStatus from 'http-status-codes';
 import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
 import { asyncHandler, responseFunction } from "../../utils/controller.util";
-import { createBlogService, deleteBlogService, getBlogByIdService, updateBlogService } from "./blogs.service";
+import { createBlogService, deleteBlogService, getAllBlogsService, getBlogByIdService, updateBlogService } from "./blogs.service";
 
 
 export const createBlogs = asyncHandler( async ( req: Request, res: Response ) =>
@@ -39,7 +39,9 @@ export const getBlogById = asyncHandler( async ( req: Request, res: Response ) =
 export const getAllBlogs = asyncHandler( async ( req: Request, res: Response ) =>
 {
 
-    const blogs = await myPrisma.blog.findMany();
+    const query = req.query as Record<string, string>;
+
+    const blogs = await getAllBlogsService(query)
 
     if ( !blogs )
     {

@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBlog = exports.updateBlog = exports.getAllBlogs = exports.getBlogById = exports.createBlogs = void 0;
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
-const getPrisma_1 = require("../../../config/db/getPrisma");
 const App_error_1 = require("../../../config/errors/App.error");
 const controller_util_1 = require("../../utils/controller.util");
 const blogs_service_1 = require("./blogs.service");
@@ -30,7 +29,8 @@ exports.getBlogById = (0, controller_util_1.asyncHandler)(async (req, res) => {
     });
 });
 exports.getAllBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
-    const blogs = await getPrisma_1.myPrisma.blog.findMany();
+    const query = req.query;
+    const blogs = await (0, blogs_service_1.getAllBlogsService)(query);
     if (!blogs) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Unable to get all blogs!!");
     }

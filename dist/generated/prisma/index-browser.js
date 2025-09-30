@@ -112,6 +112,18 @@ exports.Prisma.BlogScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
+exports.Prisma.ProjectScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    image: 'image',
+    slug: 'slug',
+    tags: 'tags',
+    githubLink: 'githubLink',
+    liveLink: 'liveLink',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 exports.Prisma.SortOrder = {
     asc: 'asc',
     desc: 'desc'
@@ -126,7 +138,8 @@ exports.Prisma.NullsOrder = {
 };
 exports.Prisma.ModelName = {
     User: 'User',
-    Blog: 'Blog'
+    Blog: 'Blog',
+    Project: 'Project'
 };
 /**
  * This is a stub Prisma Client that will error at runtime if called.

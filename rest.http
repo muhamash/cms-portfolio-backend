@@ -16,8 +16,26 @@
 # Content-Type: application/json
 
 
-# GET http://localhost:3000/v1/blogs/all-blogs
+# GET http://localhost:3000/v1/blogs/all-blogs?page=2&limit=5
+
+# GET http://localhost:3000/v1/blogs/all-blogs?search=javascript
+
+# GET http://localhost:3000/v1/blogs/all-blogs?page=2&limit=3
+
+# GET http://localhost:3000/v1/blogs/all-blogs?sortBy=createdAt&sortOrder=desc
+
+# GET http://localhost:3000/v1/blogs/all-blogs?sortBy=content&sortOrder=asc
+
+# GET http://localhost:3000/v1/blogs/all-blogs?search=typescript&sortBy=title&sortOrder=asc&page=2&limit=3
+
+# GET http://localhost:3000/v1/blogs/all-blogs?sortBy=tags&sortOrder=asc
+
+# GET http://localhost:3000/v1/blogs/all-blogs?limit=5&page=1&search=changed
+
+# GET http://localhost:3000/v1/blogs/all-blogs?sortBy=title&sortOrder=asc
 # Content-Type: application/json
+
+
 
 # PATCH  http://localhost:3000/v1/blogs/update-blog/1
 # Content-Type: application/json
