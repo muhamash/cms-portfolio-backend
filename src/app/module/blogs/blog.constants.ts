@@ -1,4 +1,4 @@
-export const BLOG_SEARCHABLE_FIELDS = ["title", "content", "slug"];
+export const BLOG_SEARCHABLE_FIELDS = ["title", "content", "slug", "tags"];
 export const BLOG_FILTERABLE_FIELDS = ["title", "content", "slug", "tags"];
 export const BLOG_ARRAY_FIELDS = ["tags"];
 export const BLOG_EXCLUDED_FIELDS = ["updatedAt"];

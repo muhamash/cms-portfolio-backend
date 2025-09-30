@@ -45,6 +45,9 @@ export class PrismaQueryBuilder<
     this.page = options.page || 1;
     this.limit = options.limit || 10;
     this.filters = options.filters || {};
+
+    const { page, limit, sortBy, sortOrder, search, ...restFilters } = options.filters || {};
+    this.filters = restFilters;
   }
 
   fields(allFields: string[]): this {
@@ -76,33 +79,54 @@ export class PrismaQueryBuilder<
   private buildSearchFilter(): any {
     if (!this.search || this.searchableFields.length === 0) return null;
 
+    // return {
+    //   OR: this.searchableFields.map((field) => ({
+    //     [field]: { contains: this.search, mode: "insensitive" },
+    //   })),
+    // };
+
     return {
-      OR: this.searchableFields.map((field) => ({
-        [field]: { contains: this.search, mode: "insensitive" },
-      })),
+      OR: this.searchableFields.map( ( field ) =>
+      {
+        if ( this.arrayFields.includes( field ) )
+        {
+          
+          return { [ field ]: { hasSome: [ this.search ] } };
+        }
+        else
+        {
+          return { [ field ]: { contains: this.search, mode: "insensitive" } };
+        }
+      } ),
     };
   }
 
   private buildFieldFilters(): any {
     const fieldFilters: any = {};
 
-    Object.entries(this.filters).forEach(([key, value]) => {
-      if (!this.filterableFields.includes(key) || !value) return;
+    Object.entries( this.filters ).forEach( ( [ key, value ] ) =>
+    {
+      if ( !this.filterableFields.includes( key ) || !value ) return;
 
-      if (this.arrayFields.includes(key)) {
-        const arr = Array.isArray(value)
+      if ( this.arrayFields.includes( key ) )
+      {
+        const arr = Array.isArray( value )
           ? value
           : typeof value === "string"
-          ? value.split(",").map((v) => v.trim())
-          : [value];
+            ? value.split( "," ).map( ( v ) => v.trim() )
+            : [ value ];
 
-        fieldFilters[key] = { hasSome: arr };
-      } else if (typeof value === "string") {
-        fieldFilters[key] = { contains: value, mode: "insensitive" };
-      } else {
-        fieldFilters[key] = value;
+        fieldFilters[ key ] = { hasSome: arr };
       }
-    });
+      else if ( typeof value === "string" )
+      {
+        fieldFilters[ key ] = { contains: value, mode: "insensitive" };
+      }
+      else
+      {
+        fieldFilters[ key ] = value;
+      }
+    } );
 
     return Object.keys(fieldFilters).length > 0 ? fieldFilters : null;
   }
@@ -118,6 +142,8 @@ export class PrismaQueryBuilder<
     if (conditions.length === 1) this.where = conditions[0];
     else if (conditions.length > 1) this.where = { AND: conditions };
 
+    // console.log( "WHERE CLAUSE =>", JSON.stringify( this.where, null, 2 ) );
+    
     const data = await this.model.findMany({
       where: this.where,
       skip: this.skip,

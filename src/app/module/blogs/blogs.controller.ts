@@ -45,7 +45,7 @@ export const getAllBlogs = asyncHandler( async ( req: Request, res: Response ) =
 
     const query = req.query as Record<string, string>;
 
-    const blogs = await getAllBlogsService(query)
+    const blogs = await getAllBlogsService( query )
 
     if ( !blogs )
     {
@@ -54,7 +54,13 @@ export const getAllBlogs = asyncHandler( async ( req: Request, res: Response ) =
 
     if ( blogs.data?.length === 0 )
     {
-        throw new AppError( httpStatus.EXPECTATION_FAILED, "Blogs are empty!" )
+        responseFunction( res, {
+            message: "Blogs are empty!",
+            statusCode: httpStatus.OK,
+            data: []
+        } )
+
+        return
     }
         
     responseFunction( res, {
