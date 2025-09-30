@@ -3,7 +3,7 @@ import slugify from 'slugify';
 import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
 import { PrismaQueryBuilder } from '../../utils/queryBuilder';
-import { BLOG_DEFAULT_LIMIT, BLOG_DEFAULT_PAGE, BLOG_DEFAULT_SORT_FIELD, BLOG_DEFAULT_SORT_ORDER, BLOG_EXCLUDED_FIELDS, BLOG_SEARCHABLE_FIELDS } from './blog.constants';
+import { BLOG_ARRAY_FIELDS, BLOG_DEFAULT_LIMIT, BLOG_DEFAULT_PAGE, BLOG_DEFAULT_SORT_FIELD, BLOG_DEFAULT_SORT_ORDER, BLOG_EXCLUDED_FIELDS, BLOG_FILTERABLE_FIELDS, BLOG_SEARCHABLE_FIELDS } from './blog.constants';
 import { BlogTypes, UpdateBlogTypes } from "./blogs.types";
 
 
@@ -12,23 +12,22 @@ export const getAllBlogsService = async ( query?: Record<string, string> ) =>
     const builder = new PrismaQueryBuilder( {
         model: myPrisma.blog,
         searchableFields: BLOG_SEARCHABLE_FIELDS,
+        filterableFields: BLOG_FILTERABLE_FIELDS,
+        arrayFields: BLOG_ARRAY_FIELDS,
         excludeFields: BLOG_EXCLUDED_FIELDS,
         search: query?.search,
         sortBy: query?.sortBy || BLOG_DEFAULT_SORT_FIELD,
         sortOrder: ( query?.sortOrder as "asc" | "desc" ) || BLOG_DEFAULT_SORT_ORDER,
         page: query?.page ? Number( query.page ) : BLOG_DEFAULT_PAGE,
         limit: query?.limit ? Number( query.limit ) : BLOG_DEFAULT_LIMIT,
+        filters: query || {},
     } );
 
-    const result = await builder
+    return builder
         .fields( [ "id", "title", "content", "slug", "tags", "image", "createdAt" ] )
         .sort()
         .pagination()
         .build();
-
-    // console.log( result );
-
-    return result;
 };
 
 

@@ -37,6 +37,15 @@
 
 
 
+# GET http://localhost:3000/v1/blogs/all-blogs?limit=5&sortBy=title&sortOrder=asc&search=oka
+# Content-Type: application/json
+
+# GET http://localhost:3000/v1/blogs/all-blogs?search=JavaScript
+# Content-Type: application/json
+
+# GET http://localhost:3000/v1/blogs/all-blogs?page=2&limit=2
+# Content-Type: application/json
+
 # PATCH  http://localhost:3000/v1/blogs/update-blog/1
 # Content-Type: application/json
 

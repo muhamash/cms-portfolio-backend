@@ -36,9 +36,11 @@ export interface QueryBuilderOptions<T> {
   model: T;
   searchableFields?: string[];
   excludeFields?: string[];
+  filterableFields?: string[];
   search?: string;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
+  filters?: Record<string, any>; 
 }
