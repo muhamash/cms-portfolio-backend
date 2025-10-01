@@ -9,7 +9,7 @@ export const createProjectSchema = z.object( {
     description: z
         .string()
         .min( 10, "Description must be at least 10 characters" )
-        .max( 1000, "Description must be at most 1000 characters" ),
+        .max( 30000, "Description must be at most 30000 characters" ),
     image: z.string().url( "Image must be a valid URL" ).optional(),
     tags: z
         .array( z.string().min( 1, "Tag cannot be empty" ) )

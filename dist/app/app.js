@@ -15,8 +15,8 @@ app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
-    // credentials: true
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://cms-portfolio-with-resume-builder.vercel.app/"],
+    credentials: true
 }));
 app.use("/", home_route_1.homeRouter);
 app.use("/v1", service_route_1.servicesRouter);

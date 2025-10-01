@@ -9,7 +9,15 @@ const App_error_1 = require("../../../config/errors/App.error");
 const controller_util_1 = require("../../utils/controller.util");
 const blogs_service_1 = require("./blogs.service");
 exports.createBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
-    const createdBlog = await (0, blogs_service_1.createBlogService)(req.body);
+    // console.log( "req.files:", req.files );
+    let uploadedFiles = [];
+    if (Array.isArray(req.files)) {
+        uploadedFiles = req.files.map(f => f.path);
+    }
+    else if (req.files && typeof req.files === "object") {
+        uploadedFiles = Object.values(req.files).flat().map(f => f.path);
+    }
+    const createdBlog = await (0, blogs_service_1.createBlogService)({ ...req.body, image: uploadedFiles });
     if (!createdBlog) {
         throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Unable to create a blog!!");
     }
@@ -40,7 +48,7 @@ exports.getAllBlogs = (0, controller_util_1.asyncHandler)(async (req, res) => {
     if (blogs.data?.length === 0) {
         (0, controller_util_1.responseFunction)(res, {
             message: "Blogs are empty!",
-            statusCode: http_status_codes_1.default.NOT_FOUND,
+            statusCode: http_status_codes_1.default.OK,
             data: []
         });
         return;

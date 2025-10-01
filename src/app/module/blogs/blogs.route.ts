@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { multerUpload } from "../../../config/image/multer.config";
 import { validateRequest } from "../../middleware/validateRequest.middleware";
 import { createBlogs, deleteBlog, getAllBlogs, getBlogById, updateBlog } from "./blogs.controller";
 import { blogSchema, updateBlogSchema } from "./blogs.validation";
@@ -6,7 +7,7 @@ import { blogSchema, updateBlogSchema } from "./blogs.validation";
 export const blogsRoutes = Router();
 
 
-blogsRoutes.post( "/create-blog", validateRequest( blogSchema ), createBlogs );
+blogsRoutes.post( "/create-blog", multerUpload.array("image"), validateRequest( blogSchema ), createBlogs );
 
 blogsRoutes.get( "/get-blog/:id", getBlogById );
 

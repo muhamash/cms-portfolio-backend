@@ -7,7 +7,19 @@ import { createBlogService, deleteBlogService, getAllBlogsService, getBlogByIdSe
 
 export const createBlogs = asyncHandler( async ( req: Request, res: Response ) =>
 {
-    const createdBlog = await createBlogService( req.body );
+    // console.log( "req.files:", req.files );
+
+    let uploadedFiles: string[] = [];
+
+    if ( Array.isArray( req.files ) )
+    {
+        uploadedFiles = req.files.map( f => f.path );
+    } else if ( req.files && typeof req.files === "object" )
+    {
+        uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
+    }
+
+    const createdBlog = await createBlogService( { ...req.body, image: uploadedFiles } );
 
     if ( !createdBlog )
     {
@@ -56,7 +68,7 @@ export const getAllBlogs = asyncHandler( async ( req: Request, res: Response ) =
     {
         responseFunction( res, {
             message: "Blogs are empty!",
-            statusCode: httpStatus.NOT_FOUND,
+            statusCode: httpStatus.OK,
             data: []
         } )
 

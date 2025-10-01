@@ -16,7 +16,7 @@
     "strict": false,
     "skipLibCheck": false,
     "resolveJsonModule": true,
-    "typeRoots": [ "./node_modules/@types", "src/config/interfaces/index.d.ts" ]
+    "typeRoots": [ "./src/config/interface/index.d.ts", "./node_modules/@types", "src/config/interfaces/index.d.ts" ]
   },
   "include": [ "src/**/*", "src/config/interfaces/index.d.ts" ],
   "exclude": [ "node_modules", "dist" ]

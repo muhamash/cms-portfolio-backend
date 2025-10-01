@@ -4,7 +4,7 @@ import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
 import { PrismaQueryBuilder } from '../../utils/queryBuilder';
 import { BLOG_ARRAY_FIELDS, BLOG_DEFAULT_LIMIT, BLOG_DEFAULT_PAGE, BLOG_DEFAULT_SORT_FIELD, BLOG_DEFAULT_SORT_ORDER, BLOG_EXCLUDED_FIELDS, BLOG_FILTERABLE_FIELDS, BLOG_SEARCHABLE_FIELDS } from './blog.constants';
-import { BlogTypes, UpdateBlogTypes } from "./blogs.types";
+import { UpdateBlogTypes } from "./blogs.types";
 
 
 export const getAllBlogsService = async ( query?: Record<string, string> ) =>
@@ -30,8 +30,10 @@ export const getAllBlogsService = async ( query?: Record<string, string> ) =>
         .build();
 };
 
-export const createBlogService = async ( payload: BlogTypes ) =>
+export const createBlogService = async ( payload: any ) =>
 {
+    // console.log( payload );
+    
     let slug = slugify( payload.title, {
         lower: true,
         strict: true,
@@ -47,7 +49,7 @@ export const createBlogService = async ( payload: BlogTypes ) =>
         data: {
             title: payload.title,
             content: payload.content,
-            image: payload.image,
+            image: payload.image[0],
             tags: payload.tags ?? [],
             slug: slug
         },

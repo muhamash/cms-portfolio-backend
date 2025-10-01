@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRoutes = void 0;
 const express_1 = require("express");
+const multer_config_1 = require("../../../config/image/multer.config");
 const validateRequest_middleware_1 = require("../../middleware/validateRequest.middleware");
 const blogs_controller_1 = require("./blogs.controller");
 const blogs_validation_1 = require("./blogs.validation");
 exports.blogsRoutes = (0, express_1.Router)();
-exports.blogsRoutes.post("/create-blog", (0, validateRequest_middleware_1.validateRequest)(blogs_validation_1.blogSchema), blogs_controller_1.createBlogs);
+exports.blogsRoutes.post("/create-blog", multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(blogs_validation_1.blogSchema), blogs_controller_1.createBlogs);
 exports.blogsRoutes.get("/get-blog/:id", blogs_controller_1.getBlogById);
 exports.blogsRoutes.get("/all-blogs", blogs_controller_1.getAllBlogs);
 exports.blogsRoutes.patch("/update-blog/:id", (0, validateRequest_middleware_1.validateRequest)(blogs_validation_1.updateBlogSchema), blogs_controller_1.updateBlog);
