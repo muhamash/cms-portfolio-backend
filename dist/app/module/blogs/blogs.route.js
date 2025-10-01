@@ -10,5 +10,5 @@ exports.blogsRoutes = (0, express_1.Router)();
 exports.blogsRoutes.post("/create-blog", multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(blogs_validation_1.blogSchema), blogs_controller_1.createBlogs);
 exports.blogsRoutes.get("/get-blog/:id", blogs_controller_1.getBlogById);
 exports.blogsRoutes.get("/all-blogs", blogs_controller_1.getAllBlogs);
-exports.blogsRoutes.patch("/update-blog/:id", (0, validateRequest_middleware_1.validateRequest)(blogs_validation_1.updateBlogSchema), blogs_controller_1.updateBlog);
+exports.blogsRoutes.patch("/update-blog/:id", multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(blogs_validation_1.updateBlogSchema), blogs_controller_1.updateBlog);
 exports.blogsRoutes.delete("/delete-blog/:id", blogs_controller_1.deleteBlog);

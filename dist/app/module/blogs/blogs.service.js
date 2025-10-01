@@ -100,7 +100,10 @@ const updateBlogService = async (id, payload) => {
     const updatedBlog = await getPrisma_1.myPrisma.blog.update({
         where: { id: Number(id) },
         data: {
-            ...payload,
+            title: payload.title,
+            content: payload.content,
+            image: payload.image[0],
+            tags: payload.tags ?? [],
             slug: updatedSlug,
         },
     });

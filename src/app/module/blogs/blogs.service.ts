@@ -93,7 +93,7 @@ export const getBlogByIdService = async ( id: string ) =>
 
 export const updateBlogService = async (
     id: string,
-    payload: UpdateBlogTypes
+    payload: any
 ) =>
 {
     const numericId = Number( id );
@@ -133,7 +133,10 @@ export const updateBlogService = async (
     const updatedBlog = await myPrisma.blog.update( {
         where: { id: Number( id ) },
         data: {
-            ...payload,
+            title: payload.title,
+            content: payload.content,
+            image: payload.image[0],
+            tags: payload.tags ?? [],
             slug: updatedSlug,
         },
     } );

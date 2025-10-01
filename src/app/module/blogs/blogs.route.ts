@@ -13,6 +13,6 @@ blogsRoutes.get( "/get-blog/:id", getBlogById );
 
 blogsRoutes.get( "/all-blogs", getAllBlogs );
 
-blogsRoutes.patch( "/update-blog/:id", validateRequest(updateBlogSchema), updateBlog );
+blogsRoutes.patch( "/update-blog/:id", multerUpload.array("image"), validateRequest(updateBlogSchema), updateBlog );
 
 blogsRoutes.delete( "/delete-blog/:id", deleteBlog );

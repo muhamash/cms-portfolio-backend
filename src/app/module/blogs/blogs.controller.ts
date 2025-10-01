@@ -92,11 +92,21 @@ export const updateBlog = asyncHandler( async ( req: Request, res: Response ) =>
         throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
     }
 
-    const updatedBlog = await updateBlogService(id, req.body)
+    let uploadedFiles: string[] = [];
+
+    if ( Array.isArray( req.files ) )
+    {
+        uploadedFiles = req.files.map( f => f.path );
+    } else if ( req.files && typeof req.files === "object" )
+    {
+        uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
+    }
+
+    const updatedBlog = await updateBlogService(id, { ...req.body, image: uploadedFiles } )
         
     responseFunction( res, {
         message: "Blog updated successfully",
-        statusCode: httpStatus.ACCEPTED,
+        statusCode: httpStatus.OK,
         data: updatedBlog
     } )
 } );
@@ -117,10 +127,11 @@ export const deleteBlog = asyncHandler( async ( req: Request, res: Response ) =>
     {
         throw new AppError( httpStatus.CONFLICT, "Unable to delete blog!!" )
     }
-        
+    // console.log( deleteABlog )
+    
     responseFunction( res, {
         message: "Blog deleted",
-        statusCode: httpStatus.ACCEPTED,
+        statusCode: httpStatus.OK,
         data: deleteABlog
     } )
 } );

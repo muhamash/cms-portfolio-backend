@@ -64,10 +64,17 @@ exports.updateBlog = (0, controller_util_1.asyncHandler)(async (req, res) => {
     if (!id) {
         throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Id not provided!!");
     }
-    const updatedBlog = await (0, blogs_service_1.updateBlogService)(id, req.body);
+    let uploadedFiles = [];
+    if (Array.isArray(req.files)) {
+        uploadedFiles = req.files.map(f => f.path);
+    }
+    else if (req.files && typeof req.files === "object") {
+        uploadedFiles = Object.values(req.files).flat().map(f => f.path);
+    }
+    const updatedBlog = await (0, blogs_service_1.updateBlogService)(id, { ...req.body, image: uploadedFiles });
     (0, controller_util_1.responseFunction)(res, {
         message: "Blog updated successfully",
-        statusCode: http_status_codes_1.default.ACCEPTED,
+        statusCode: http_status_codes_1.default.OK,
         data: updatedBlog
     });
 });
@@ -80,9 +87,10 @@ exports.deleteBlog = (0, controller_util_1.asyncHandler)(async (req, res) => {
     if (!deleteABlog) {
         throw new App_error_1.AppError(http_status_codes_1.default.CONFLICT, "Unable to delete blog!!");
     }
+    // console.log( deleteABlog )
     (0, controller_util_1.responseFunction)(res, {
         message: "Blog deleted",
-        statusCode: http_status_codes_1.default.ACCEPTED,
+        statusCode: http_status_codes_1.default.OK,
         data: deleteABlog
     });
 });
