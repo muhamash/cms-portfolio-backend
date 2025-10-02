@@ -10,7 +10,14 @@ const controller_util_1 = require("../../utils/controller.util");
 const project_service_1 = require("./project.service");
 exports.createProject = (0, controller_util_1.asyncHandler)(async (req, res) => {
     // console.log(req.body)
-    const project = await (0, project_service_1.createProjectService)(req.body);
+    let uploadedFiles = [];
+    if (Array.isArray(req.files)) {
+        uploadedFiles = req.files.map(f => f.path);
+    }
+    else if (req.files && typeof req.files === "object") {
+        uploadedFiles = Object.values(req.files).flat().map(f => f.path);
+    }
+    const project = await (0, project_service_1.createProjectService)({ ...req.body, image: uploadedFiles });
     if (!project) {
         throw new App_error_1.AppError(http_status_codes_1.default.BAD_REQUEST, "Unable to create the project");
     }
@@ -37,7 +44,14 @@ exports.updateProjectById = (0, controller_util_1.asyncHandler)(async (req, res)
     if (!id) {
         throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Id not provided!!");
     }
-    const updatedProject = await (0, project_service_1.updateProjectByIdService)(id, req.body);
+    let uploadedFiles = [];
+    if (Array.isArray(req.files)) {
+        uploadedFiles = req.files.map(f => f.path);
+    }
+    else if (req.files && typeof req.files === "object") {
+        uploadedFiles = Object.values(req.files).flat().map(f => f.path);
+    }
+    const updatedProject = await (0, project_service_1.updateProjectByIdService)(id, { ...req.body, image: uploadedFiles });
     (0, controller_util_1.responseFunction)(res, {
         message: "Updated the target!",
         statusCode: http_status_codes_1.default.OK,

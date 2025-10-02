@@ -8,7 +8,17 @@ import { createProjectService, deleteProjectService, getAllProjectsService, getP
 export const createProject = asyncHandler( async ( req: Request, res: Response ) =>
 {
     // console.log(req.body)
-    const project = await createProjectService( req.body )
+    let uploadedFiles: string[] = [];
+
+    if ( Array.isArray( req.files ) )
+    {
+        uploadedFiles = req.files.map( f => f.path );
+    } else if ( req.files && typeof req.files === "object" )
+    {
+        uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
+    }
+
+    const project = await createProjectService( { ...req.body, image: uploadedFiles } )
     
     if ( !project )
     {
@@ -49,7 +59,17 @@ export const updateProjectById = asyncHandler( async ( req: Request, res: Respon
         throw new AppError(httpStatus.EXPECTATION_FAILED, "Id not provided!!")
     }
 
-    const updatedProject = await updateProjectByIdService( id, req.body );
+    let uploadedFiles: string[] = [];
+
+    if ( Array.isArray( req.files ) )
+    {
+        uploadedFiles = req.files.map( f => f.path );
+    } else if ( req.files && typeof req.files === "object" )
+    {
+        uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
+    }
+
+    const updatedProject = await updateProjectByIdService( id, { ...req.body, image: uploadedFiles } );
 
     responseFunction( res, {
         message: "Updated the target!",

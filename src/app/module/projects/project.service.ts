@@ -4,10 +4,9 @@ import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
 import { PrismaQueryBuilder } from '../../utils/queryBuilder';
 import { PROJECT_ARRAY_FIELDS, PROJECT_DEFAULT_LIMIT, PROJECT_DEFAULT_PAGE, PROJECT_DEFAULT_SORT_FIELD, PROJECT_DEFAULT_SORT_ORDER, PROJECT_EXCLUDED_FIELDS, PROJECT_FILTERABLE_FIELDS, PROJECT_SEARCHABLE_FIELDS } from './projects.constants';
-import { CreateProjectTypes, UpdateProjectTypes } from "./projects.types";
 
 
-export const createProjectService = async ( payload: CreateProjectTypes ) =>
+export const createProjectService = async ( payload: any ) =>
 {
     let slug = slugify( payload.title, {
         lower: true,
@@ -25,6 +24,7 @@ export const createProjectService = async ( payload: CreateProjectTypes ) =>
     const createProject = await myPrisma.project.create( {
         data: {
             ...payload,
+            image: payload.image[0],
             slug
         }
     } );
@@ -57,7 +57,7 @@ export const getProjectByIdService = async ( id: string ) =>
 };
 
 
-export const updateProjectByIdService = async ( id: string, payload: UpdateProjectTypes ) =>
+export const updateProjectByIdService = async ( id: string, payload: any ) =>
 {
     const numericId = Number( id );
 
@@ -94,6 +94,7 @@ export const updateProjectByIdService = async ( id: string, payload: UpdateProje
         where: { id: Number( id ) },
         data: {
             ...payload,
+            image: payload.image[0],
             slug: updatedSlug,
         },
     } );

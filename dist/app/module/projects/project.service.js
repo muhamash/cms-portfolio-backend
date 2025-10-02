@@ -23,6 +23,7 @@ const createProjectService = async (payload) => {
     const createProject = await getPrisma_1.myPrisma.project.create({
         data: {
             ...payload,
+            image: payload.image[0],
             slug
         }
     });
@@ -70,6 +71,7 @@ const updateProjectByIdService = async (id, payload) => {
         where: { id: Number(id) },
         data: {
             ...payload,
+            image: payload.image[0],
             slug: updatedSlug,
         },
     });
