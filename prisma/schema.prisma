@@ -40,6 +40,7 @@ model PersonalInfo {
   skills        Skill[]
   experiences   WorkExperience[]
   education     Education[]
+  HomePage      HomePage?
 }
 
 model Blog {
@@ -85,7 +86,7 @@ model SocialLink {
 
 model Skill {
   id             Int    @id @default(autoincrement())
-  name           String
+  name           String @unique
   personalInfoId Int
   personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
 }
@@ -99,6 +100,9 @@ model HomePage {
   headerAboutAddress  String
   headerAboutSubTitle String
 
+  personalInfoId Int @unique
+  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
+  
   headerSkills HeaderSkill[]
   stats        HomePageStat[]
 }
@@ -114,6 +118,7 @@ model HomePageStat {
   id          Int      @id @default(autoincrement())
   label       String   
   value       String
+  
   homePageId  Int
   homePage    HomePage @relation(fields: [homePageId], references: [id])
 }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePersonalInfo = exports.personalInfoSchema = void 0;
+exports.updateHeaderSchema = exports.headerSchema = exports.updateSkillSchema = exports.skillSchema = exports.updateSocialSchema = exports.socialLinkSchema = exports.updatePersonalInfo = exports.personalInfoSchema = void 0;
 const zod_1 = require("zod");
 const phoneRegex = /^\+?[1-9]\d{1,14}$/;
 exports.personalInfoSchema = zod_1.z.object({
@@ -41,5 +41,57 @@ exports.personalInfoSchema = zod_1.z.object({
         .transform((v) => (v === "" ? null : v)),
 });
 exports.updatePersonalInfo = exports.personalInfoSchema.partial().refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required to update",
+});
+exports.socialLinkSchema = zod_1.z.object({
+    platform: zod_1.z
+        .string()
+        .min(2, "Platform name must be at least 2 characters")
+        .max(50, "Platform name must be less than 50 characters"),
+    url: zod_1.z
+        .string()
+        .url("Must be a valid URL")
+        .min(5, "URL must be at least 5 characters")
+});
+exports.updateSocialSchema = exports.socialLinkSchema.partial().refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required to update",
+});
+exports.skillSchema = zod_1.z.object({
+    name: zod_1.z
+        .string()
+        .min(2, "Skill name must be at least 2 characters long")
+        .max(50, "Skill name must be less than 50 characters"),
+    personalInfoId: zod_1.z.number().int().positive("Invalid personalInfoId"),
+});
+exports.updateSkillSchema = exports.skillSchema.partial().refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required to update",
+});
+exports.headerSchema = zod_1.z.object({
+    headerText: zod_1.z
+        .string()
+        .min(2, "Header text must be at least 2 characters")
+        .max(100, "Header text too long"),
+    headerSubTitle: zod_1.z
+        .string()
+        .min(2, "Header subtitle must be at least 2 characters")
+        .max(150, "Header subtitle too long"),
+    headerAboutText: zod_1.z
+        .string()
+        .min(2, "Header about text must be at least 2 characters")
+        .max(200, "Header about text too long"),
+    headerAboutSubText: zod_1.z
+        .string()
+        .min(2, "Header about sub text must be at least 2 characters")
+        .max(200, "Header about sub text too long"),
+    headerAboutAddress: zod_1.z
+        .string()
+        .min(5, "Header address must be at least 5 characters")
+        .max(200, "Header address too long"),
+    headerAboutSubTitle: zod_1.z
+        .string()
+        .min(2, "Header about subtitle must be at least 2 characters")
+        .max(150, "Header about subtitle too long"),
+});
+exports.updateHeaderSchema = exports.headerSchema.partial().refine((data) => Object.keys(data).length > 0, {
     message: "At least one field is required to update",
 });

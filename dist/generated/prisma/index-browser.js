@@ -154,7 +154,8 @@ exports.Prisma.HomePageScalarFieldEnum = {
     headerAboutText: 'headerAboutText',
     headerAboutSubText: 'headerAboutSubText',
     headerAboutAddress: 'headerAboutAddress',
-    headerAboutSubTitle: 'headerAboutSubTitle'
+    headerAboutSubTitle: 'headerAboutSubTitle',
+    personalInfoId: 'personalInfoId'
 };
 exports.Prisma.HeaderSkillScalarFieldEnum = {
     id: 'id',
