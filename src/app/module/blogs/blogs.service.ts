@@ -39,6 +39,7 @@ export const createBlogService = async ( payload: any, authorId: number ) =>
     } );
 
     const existing = await myPrisma.blog.findUnique( { where: { slug } } );
+    
     if ( existing )
     {
         slug = `${ slug }-${ Date.now() }`;

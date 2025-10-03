@@ -25,12 +25,12 @@ model User {
 
 model PersonalInfo {
   id        Int      @id @default(autoincrement())
-  image     String?
+  image     String
   name      String
-  address   String?
-  phone     String?
+  address   String
+  phone     String
   email     String   @unique
-  title     String?
+  title     String
 
   // relations
   userId Int @unique
