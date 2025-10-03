@@ -4,6 +4,7 @@ exports.servicesRouter = void 0;
 const express_1 = require("express");
 const blogs_route_1 = require("../module/blogs/blogs.route");
 const projects_route_1 = require("../module/projects/projects.route");
+const page_route_1 = require("../module/page/page.route");
 exports.servicesRouter = (0, express_1.Router)();
 const serviceRoute = [
     {
@@ -13,6 +14,10 @@ const serviceRoute = [
     {
         path: "/projects",
         route: projects_route_1.projectsRoutes
+    },
+    {
+        path: "/pages",
+        route: page_route_1.pageRoutes
     }
 ];
 serviceRoute.forEach(router => {

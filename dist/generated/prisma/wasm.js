@@ -16,13 +16,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 const { PrismaClientKnownRequestError, PrismaClientUnknownRequestError, PrismaClientRustPanicError, PrismaClientInitializationError, PrismaClientValidationError, getPrismaClient, sqltag, empty, join, raw, skip, Decimal, Debug, objectEnumValues, makeStrictEnum, Extensions, warnOnce, defineDmmfProperty, Public, getRuntime, createParam, } = require('./runtime/wasm-engine-edge.js');
 const Prisma = {};
@@ -81,6 +91,16 @@ exports.Prisma.UserScalarFieldEnum = {
     name: 'name',
     password: 'password'
 };
+exports.Prisma.PersonalInfoScalarFieldEnum = {
+    id: 'id',
+    image: 'image',
+    name: 'name',
+    address: 'address',
+    phone: 'phone',
+    email: 'email',
+    title: 'title',
+    userId: 'userId'
+};
 exports.Prisma.BlogScalarFieldEnum = {
     id: 'id',
     title: 'title',
@@ -89,7 +109,8 @@ exports.Prisma.BlogScalarFieldEnum = {
     slug: 'slug',
     tags: 'tags',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    authorId: 'authorId'
 };
 exports.Prisma.ProjectScalarFieldEnum = {
     id: 'id',
@@ -101,7 +122,55 @@ exports.Prisma.ProjectScalarFieldEnum = {
     githubLink: 'githubLink',
     liveLink: 'liveLink',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    ownerId: 'ownerId'
+};
+exports.Prisma.SocialLinkScalarFieldEnum = {
+    id: 'id',
+    platform: 'platform',
+    url: 'url',
+    personalInfoId: 'personalInfoId'
+};
+exports.Prisma.SkillScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    personalInfoId: 'personalInfoId'
+};
+exports.Prisma.HomePageScalarFieldEnum = {
+    id: 'id',
+    headerText: 'headerText',
+    headerSubTitle: 'headerSubTitle',
+    headerAboutText: 'headerAboutText',
+    headerAboutSubText: 'headerAboutSubText',
+    headerAboutAddress: 'headerAboutAddress',
+    headerAboutSubTitle: 'headerAboutSubTitle'
+};
+exports.Prisma.HeaderSkillScalarFieldEnum = {
+    id: 'id',
+    skill: 'skill',
+    homePageId: 'homePageId'
+};
+exports.Prisma.HomePageStatScalarFieldEnum = {
+    id: 'id',
+    label: 'label',
+    value: 'value',
+    homePageId: 'homePageId'
+};
+exports.Prisma.WorkExperienceScalarFieldEnum = {
+    id: 'id',
+    position: 'position',
+    company: 'company',
+    description: 'description',
+    timeLine: 'timeLine',
+    personalInfoId: 'personalInfoId'
+};
+exports.Prisma.EducationScalarFieldEnum = {
+    id: 'id',
+    degree: 'degree',
+    institute: 'institute',
+    timeLine: 'timeLine',
+    description: 'description',
+    personalInfoId: 'personalInfoId'
 };
 exports.Prisma.SortOrder = {
     asc: 'asc',
@@ -117,8 +186,16 @@ exports.Prisma.NullsOrder = {
 };
 exports.Prisma.ModelName = {
     User: 'User',
+    PersonalInfo: 'PersonalInfo',
     Blog: 'Blog',
-    Project: 'Project'
+    Project: 'Project',
+    SocialLink: 'SocialLink',
+    Skill: 'Skill',
+    HomePage: 'HomePage',
+    HeaderSkill: 'HeaderSkill',
+    HomePageStat: 'HomePageStat',
+    WorkExperience: 'WorkExperience',
+    Education: 'Education'
 };
 /**
  * Create the Client
@@ -176,12 +253,12 @@ const config = {
             }
         }
     },
-    "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int     @id @default(autoincrement())\n  email    String  @unique\n  name     String?\n  password String\n}\n\nmodel Blog {\n  id        Int      @id @default(autoincrement())\n  title     String   @unique\n  content   String\n  image     String?\n  slug      String?  @unique\n  tags      String[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Project {\n  id          Int      @id @default(autoincrement())\n  title       String   @unique\n  description String\n  image       String?\n  slug        String?  @unique\n  tags        String[]\n  githubLink  String   @unique\n  liveLink    String   @unique\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n",
-    "inlineSchemaHash": "e6bf7703ba5efb8edb1e081f6d5b8256661c5097c0de79a2bb2cdf4fc0523788",
+    "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int     @id @default(autoincrement())\n  email    String  @unique\n  name     String?\n  password String\n\n  personalInfo PersonalInfo?\n\n  // relations\n  blogs    Blog[]\n  projects Project[]\n}\n\nmodel PersonalInfo {\n  id      Int     @id @default(autoincrement())\n  image   String?\n  name    String\n  address String?\n  phone   String?\n  email   String  @unique\n  title   String?\n\n  // relations\n  userId Int  @unique\n  user   User @relation(fields: [userId], references: [id])\n\n  socialLinks SocialLink[]\n  skills      Skill[]\n  experiences WorkExperience[]\n  education   Education[]\n}\n\nmodel Blog {\n  id        Int      @id @default(autoincrement())\n  title     String   @unique\n  content   String\n  image     String?\n  slug      String?  @unique\n  tags      String[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // relation\n  authorId Int\n  author   User @relation(fields: [authorId], references: [id])\n}\n\nmodel Project {\n  id          Int      @id @default(autoincrement())\n  title       String   @unique\n  description String\n  image       String?\n  slug        String?  @unique\n  tags        String[]\n  githubLink  String   @unique\n  liveLink    String   @unique\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  // relation\n  ownerId Int\n  owner   User @relation(fields: [ownerId], references: [id])\n}\n\nmodel SocialLink {\n  id       Int    @id @default(autoincrement())\n  platform String\n  url      String @unique\n\n  personalInfoId Int\n  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])\n}\n\nmodel Skill {\n  id             Int          @id @default(autoincrement())\n  name           String\n  personalInfoId Int\n  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])\n}\n\nmodel HomePage {\n  id                  Int    @id @default(autoincrement())\n  headerText          String\n  headerSubTitle      String\n  headerAboutText     String\n  headerAboutSubText  String\n  headerAboutAddress  String\n  headerAboutSubTitle String\n\n  headerSkills HeaderSkill[]\n  stats        HomePageStat[]\n}\n\nmodel HeaderSkill {\n  id         Int      @id @default(autoincrement())\n  skill      String\n  homePageId Int\n  homePage   HomePage @relation(fields: [homePageId], references: [id])\n}\n\nmodel HomePageStat {\n  id         Int      @id @default(autoincrement())\n  label      String\n  value      String\n  homePageId Int\n  homePage   HomePage @relation(fields: [homePageId], references: [id])\n}\n\nmodel WorkExperience {\n  id          Int     @id @default(autoincrement())\n  position    String\n  company     String\n  description String?\n  timeLine    String\n\n  personalInfoId Int\n  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])\n}\n\nmodel Education {\n  id          Int     @id @default(autoincrement())\n  degree      String\n  institute   String\n  timeLine    String\n  description String?\n\n  personalInfoId Int\n  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])\n}\n",
+    "inlineSchemaHash": "646cb312b61b0ce1b90f81bd88bc9d13df6876a6ebf3948d6b9ef0daca815563",
     "copyEngine": true
 };
 config.dirname = '/';
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Blog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Project\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"githubLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"liveLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}");
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalInfo\",\"kind\":\"object\",\"type\":\"PersonalInfo\",\"relationName\":\"PersonalInfoToUser\"},{\"name\":\"blogs\",\"kind\":\"object\",\"type\":\"Blog\",\"relationName\":\"BlogToUser\"},{\"name\":\"projects\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"ProjectToUser\"}],\"dbName\":null},\"PersonalInfo\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PersonalInfoToUser\"},{\"name\":\"socialLinks\",\"kind\":\"object\",\"type\":\"SocialLink\",\"relationName\":\"PersonalInfoToSocialLink\"},{\"name\":\"skills\",\"kind\":\"object\",\"type\":\"Skill\",\"relationName\":\"PersonalInfoToSkill\"},{\"name\":\"experiences\",\"kind\":\"object\",\"type\":\"WorkExperience\",\"relationName\":\"PersonalInfoToWorkExperience\"},{\"name\":\"education\",\"kind\":\"object\",\"type\":\"Education\",\"relationName\":\"EducationToPersonalInfo\"}],\"dbName\":null},\"Blog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"authorId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"author\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BlogToUser\"}],\"dbName\":null},\"Project\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"githubLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"liveLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ownerId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"owner\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProjectToUser\"}],\"dbName\":null},\"SocialLink\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"platform\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalInfoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"personalInfo\",\"kind\":\"object\",\"type\":\"PersonalInfo\",\"relationName\":\"PersonalInfoToSocialLink\"}],\"dbName\":null},\"Skill\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalInfoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"personalInfo\",\"kind\":\"object\",\"type\":\"PersonalInfo\",\"relationName\":\"PersonalInfoToSkill\"}],\"dbName\":null},\"HomePage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"headerText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headerSubTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headerAboutText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headerAboutSubText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headerAboutAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headerAboutSubTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"headerSkills\",\"kind\":\"object\",\"type\":\"HeaderSkill\",\"relationName\":\"HeaderSkillToHomePage\"},{\"name\":\"stats\",\"kind\":\"object\",\"type\":\"HomePageStat\",\"relationName\":\"HomePageToHomePageStat\"}],\"dbName\":null},\"HeaderSkill\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"skill\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"homePageId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"homePage\",\"kind\":\"object\",\"type\":\"HomePage\",\"relationName\":\"HeaderSkillToHomePage\"}],\"dbName\":null},\"HomePageStat\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"homePageId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"homePage\",\"kind\":\"object\",\"type\":\"HomePage\",\"relationName\":\"HomePageToHomePageStat\"}],\"dbName\":null},\"WorkExperience\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timeLine\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalInfoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"personalInfo\",\"kind\":\"object\",\"type\":\"PersonalInfo\",\"relationName\":\"PersonalInfoToWorkExperience\"}],\"dbName\":null},\"Education\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"degree\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"institute\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timeLine\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalInfoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"personalInfo\",\"kind\":\"object\",\"type\":\"PersonalInfo\",\"relationName\":\"EducationToPersonalInfo\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}");
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel);
 config.engineWasm = {
     getRuntime: async () => require('./query_engine_bg.js'),

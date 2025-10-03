@@ -6,7 +6,7 @@ import { PrismaQueryBuilder } from '../../utils/queryBuilder';
 import { PROJECT_ARRAY_FIELDS, PROJECT_DEFAULT_LIMIT, PROJECT_DEFAULT_PAGE, PROJECT_DEFAULT_SORT_FIELD, PROJECT_DEFAULT_SORT_ORDER, PROJECT_EXCLUDED_FIELDS, PROJECT_FILTERABLE_FIELDS, PROJECT_SEARCHABLE_FIELDS } from './projects.constants';
 
 
-export const createProjectService = async ( payload: any ) =>
+export const createProjectService = async ( payload: any, ownerId: number ) =>
 {
     let slug = slugify( payload.title, {
         lower: true,
@@ -25,7 +25,8 @@ export const createProjectService = async ( payload: any ) =>
         data: {
             ...payload,
             image: payload.image[0],
-            slug
+            slug,
+            ownerId: ownerId
         }
     } );
 

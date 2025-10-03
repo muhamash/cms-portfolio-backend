@@ -7,6 +7,7 @@ import { createProjectService, deleteProjectService, getAllProjectsService, getP
 
 export const createProject = asyncHandler( async ( req: Request, res: Response ) =>
 {
+    const user = req.user
     // console.log(req.body)
     let uploadedFiles: string[] = [];
 
@@ -18,7 +19,7 @@ export const createProject = asyncHandler( async ( req: Request, res: Response )
         uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
     }
 
-    const project = await createProjectService( { ...req.body, image: uploadedFiles } )
+    const project = await createProjectService( { ...req.body, image: uploadedFiles }, user.id )
     
     if ( !project )
     {
@@ -96,8 +97,8 @@ export const deleteProject = asyncHandler( async ( req: Request, res: Response )
     }
         
     responseFunction( res, {
-        message: "Blog deleted",
-        statusCode: httpStatus.ACCEPTED,
+        message: "PROJECT  deleted",
+        statusCode: httpStatus.OK,
         data: deleteProject
     } )
 } );

@@ -10,7 +10,7 @@ const getPrisma_1 = require("../../../config/db/getPrisma");
 const App_error_1 = require("../../../config/errors/App.error");
 const queryBuilder_1 = require("../../utils/queryBuilder");
 const projects_constants_1 = require("./projects.constants");
-const createProjectService = async (payload) => {
+const createProjectService = async (payload, ownerId) => {
     let slug = (0, slugify_1.default)(payload.title, {
         lower: true,
         strict: true,
@@ -24,7 +24,8 @@ const createProjectService = async (payload) => {
         data: {
             ...payload,
             image: payload.image[0],
-            slug
+            slug,
+            ownerId: ownerId
         }
     });
     return createProject;

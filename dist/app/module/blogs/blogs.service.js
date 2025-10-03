@@ -31,7 +31,7 @@ const getAllBlogsService = async (query) => {
         .build();
 };
 exports.getAllBlogsService = getAllBlogsService;
-const createBlogService = async (payload) => {
+const createBlogService = async (payload, authorId) => {
     // console.log( payload );
     let slug = (0, slugify_1.default)(payload.title, {
         lower: true,
@@ -47,7 +47,8 @@ const createBlogService = async (payload) => {
             content: payload.content,
             image: payload.image[0],
             tags: payload.tags ?? [],
-            slug: slug
+            slug: slug,
+            authorId: authorId
         },
     });
     // console.log( createdBlog )

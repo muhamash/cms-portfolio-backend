@@ -8,6 +8,7 @@ import { createBlogService, deleteBlogService, getAllBlogsService, getBlogByIdSe
 export const createBlogs = asyncHandler( async ( req: Request, res: Response ) =>
 {
     // console.log( "req.files:", req.files );
+    const user = req.user
 
     let uploadedFiles: string[] = [];
 
@@ -19,7 +20,7 @@ export const createBlogs = asyncHandler( async ( req: Request, res: Response ) =
         uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
     }
 
-    const createdBlog = await createBlogService( { ...req.body, image: uploadedFiles } );
+    const createdBlog = await createBlogService( { ...req.body, image: uploadedFiles }, user.id );
 
     if ( !createdBlog )
     {

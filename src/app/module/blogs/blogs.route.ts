@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { multerUpload } from "../../../config/image/multer.config";
+import { checkAuth } from "../../middleware/checkAuth.middleware";
 import { validateRequest } from "../../middleware/validateRequest.middleware";
 import { createBlogs, deleteBlog, getAllBlogs, getBlogById, updateBlog } from "./blogs.controller";
 import { blogSchema, updateBlogSchema } from "./blogs.validation";
@@ -7,12 +8,12 @@ import { blogSchema, updateBlogSchema } from "./blogs.validation";
 export const blogsRoutes = Router();
 
 
-blogsRoutes.post( "/create-blog", multerUpload.array("image"), validateRequest( blogSchema ), createBlogs );
+blogsRoutes.post( "/create-blog", checkAuth, multerUpload.array("image"), validateRequest( blogSchema ), createBlogs );
 
 blogsRoutes.get( "/get-blog/:id", getBlogById );
 
 blogsRoutes.get( "/all-blogs", getAllBlogs );
 
-blogsRoutes.patch( "/update-blog/:id", multerUpload.array("image"), validateRequest(updateBlogSchema), updateBlog );
+blogsRoutes.patch( "/update-blog/:id", checkAuth, multerUpload.array("image"), validateRequest(updateBlogSchema), updateBlog );
 
-blogsRoutes.delete( "/delete-blog/:id", deleteBlog );
+blogsRoutes.delete( "/delete-blog/:id", checkAuth, deleteBlog );
