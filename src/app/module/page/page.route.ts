@@ -12,5 +12,4 @@ pageRoutes.get("/get-personal-info", getPersonalInfo)
 
 pageRoutes.post( "/create-personal-info", checkAuth, multerUpload.array( "image" ), validateRequest( personalInfoSchema ), createPersonalInfo );
 
-// task
-pageRoutes.patch( "/update-personal-info", checkAuth, multerUpload.array("image"), validateRequest(updatePersonalInfo),  updatedPersonalInfo);
+pageRoutes.patch( "/update-personal-info/:id", checkAuth, multerUpload.array("image"), validateRequest(updatePersonalInfo),  updatedPersonalInfo);

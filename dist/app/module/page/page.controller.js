@@ -41,4 +41,19 @@ exports.createPersonalInfo = (0, controller_util_1.asyncHandler)(async (req, res
 });
 exports.updatedPersonalInfo = (0, controller_util_1.asyncHandler)(async (req, res) => {
     console.log("update personal info");
+    const user = req.user;
+    const id = req.params.id;
+    let uploadedFiles = [];
+    if (Array.isArray(req.files)) {
+        uploadedFiles = req.files.map(f => f.path);
+    }
+    else if (req.files && typeof req.files === "object") {
+        uploadedFiles = Object.values(req.files).flat().map(f => f.path);
+    }
+    const updateProfile = await (0, page_service_1.updatePersonalInfoService)(req.body, uploadedFiles, user.id, id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "Profile info updated",
+        statusCode: http_status_codes_1.default.OK,
+        data: updateProfile
+    });
 });

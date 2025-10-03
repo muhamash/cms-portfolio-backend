@@ -10,5 +10,4 @@ const page_validation_1 = require("./page.validation");
 exports.pageRoutes = (0, express_1.Router)();
 exports.pageRoutes.get("/get-personal-info", page_controller_1.getPersonalInfo);
 exports.pageRoutes.post("/create-personal-info", checkAuth_middleware_1.checkAuth, multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(page_validation_1.personalInfoSchema), page_controller_1.createPersonalInfo);
-// task
-exports.pageRoutes.patch("/update-personal-info", checkAuth_middleware_1.checkAuth, multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updatePersonalInfo), page_controller_1.updatedPersonalInfo);
+exports.pageRoutes.patch("/update-personal-info/:id", checkAuth_middleware_1.checkAuth, multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updatePersonalInfo), page_controller_1.updatedPersonalInfo);
