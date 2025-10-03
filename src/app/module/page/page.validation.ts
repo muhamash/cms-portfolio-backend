@@ -15,14 +15,14 @@ export const personalInfoSchema = z.object({
     .trim()
     .max(300, { message: "Address must be at most 300 characters" })
     // .optional()
-    .nullable()
+    // .nullable()
     .transform((v) => (v === "" ? null : v)), 
 
   phone: z
     .string()
     .trim()
     // .optional()
-    .nullable()
+    // .nullable()
     .refine((v) => {
       if (!v) return true; 
       return phoneRegex.test(v);
@@ -40,7 +40,7 @@ export const personalInfoSchema = z.object({
     .trim()
     .max(120, { message: "Title must be at most 120 characters" })
     // .optional()
-    .nullable()
+    // .nullable()
     .transform((v) => (v === "" ? null : v)),
 });
 

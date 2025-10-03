@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.projectsRoutes = void 0;
+const express_1 = require("express");
+const multer_config_1 = require("../../../config/image/multer.config");
+const checkAuth_middleware_1 = require("../../middleware/checkAuth.middleware");
+const validateRequest_middleware_1 = require("../../middleware/validateRequest.middleware");
+const projects_controller_1 = require("./projects.controller");
+const projects_validation_1 = require("./projects.validation");
+exports.projectsRoutes = (0, express_1.Router)();
+exports.projectsRoutes.post("/create-project", checkAuth_middleware_1.checkAuth, multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(projects_validation_1.createProjectSchema), projects_controller_1.createProject);
+exports.projectsRoutes.get("/get-project/:id", projects_controller_1.getProjectById);
+exports.projectsRoutes.patch("/update-project/:id", checkAuth_middleware_1.checkAuth, multer_config_1.multerUpload.array("image"), (0, validateRequest_middleware_1.validateRequest)(projects_validation_1.updateProjectSchema), projects_controller_1.updateProjectById);
+exports.projectsRoutes.delete("/delete-project/:id", checkAuth_middleware_1.checkAuth, projects_controller_1.deleteProject);
+exports.projectsRoutes.get("/all-projects", projects_controller_1.getAllProjects);
