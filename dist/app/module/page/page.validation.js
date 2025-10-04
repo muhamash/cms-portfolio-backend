@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHeaderSchema = exports.headerSchema = exports.updateSkillSchema = exports.skillSchema = exports.updateSocialSchema = exports.socialLinkSchema = exports.updatePersonalInfo = exports.personalInfoSchema = void 0;
+exports.updateEducationSchema = exports.createEducationSchema = exports.updateExperienceSchema = exports.createExperienceSchema = exports.updateHeaderStats = exports.headerStats = exports.headerSkillSchema = exports.updateHeaderSchema = exports.headerSchema = exports.updateSkillSchema = exports.skillSchema = exports.updateSocialSchema = exports.socialLinkSchema = exports.updatePersonalInfo = exports.personalInfoSchema = void 0;
 const zod_1 = require("zod");
 const phoneRegex = /^\+?[1-9]\d{1,14}$/;
 exports.personalInfoSchema = zod_1.z.object({
@@ -93,5 +93,42 @@ exports.headerSchema = zod_1.z.object({
         .max(150, "Header about subtitle too long"),
 });
 exports.updateHeaderSchema = exports.headerSchema.partial().refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required to update",
+});
+exports.headerSkillSchema = zod_1.z.object({
+    skill: zod_1.z
+        .string()
+        .min(2, "Skill name must be at least 2 characters long")
+        .max(50, "Skill name must be less than 50 characters"),
+});
+exports.headerStats = zod_1.z.object({
+    label: zod_1.z
+        .string()
+        .min(2, "label name must be at least 2 characters long")
+        .max(50, "label name must be less than 50 characters"),
+    value: zod_1.z
+        .string()
+        .min(2, "value name must be at least 20 characters long")
+        .max(50, "value name must be less than 50 characters"),
+});
+exports.updateHeaderStats = exports.headerStats.partial().refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required to update",
+});
+exports.createExperienceSchema = zod_1.z.object({
+    position: zod_1.z.string().min(1, "Position is required"),
+    company: zod_1.z.string().min(1, "Company is required"),
+    description: zod_1.z.string().optional(),
+    timeLine: zod_1.z.string().min(1, "Timeline is required"),
+});
+exports.updateExperienceSchema = exports.createExperienceSchema.partial().refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required to update",
+});
+exports.createEducationSchema = zod_1.z.object({
+    degree: zod_1.z.string().min(1, "Degree is required"),
+    institute: zod_1.z.string().min(1, "Institute is required"),
+    timeLine: zod_1.z.string().min(1, "Timeline is required"),
+    description: zod_1.z.string().optional(),
+});
+exports.updateEducationSchema = exports.createEducationSchema.partial().refine((data) => Object.keys(data).length > 0, {
     message: "At least one field is required to update",
 });

@@ -3,7 +3,7 @@ import httpStatus from 'http-status-codes';
 import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
 import { asyncHandler, responseFunction } from "../../utils/controller.util";
-import { createHomepageService, createSkillService, createSocialLinkService, personalInfoService, updateHomepageService, updatePersonalInfoService, updateSkillService, updateSocialLinkService } from "./page.service";
+import { createEducationService, createExperienceService, createHeaderSkillService, createHeaderStatService, createHomepageService, createSkillService, createSocialLinkService, personalInfoService, updateEducationService, updateExperienceService, updateHeaderSkillService, updateHeaderStatService, updateHomepageService, updatePersonalInfoService, updateSkillService, updateSocialLinkService } from "./page.service";
 
 // profile info 
 export const getPersonalInfo = asyncHandler( async ( req: Request, res: Response ) =>
@@ -186,4 +186,121 @@ export const updateHomePageData = asyncHandler( async ( req: Request, res: Respo
         statusCode: httpStatus.OK,
         data: updateHome
     })
-})
+} )
+
+
+// header skill
+export const createHeaderSkill = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user;
+
+    const headerSkill = await createHeaderSkillService( req.body, user.id );
+    
+
+    responseFunction( res, {
+        message: "created header skill",
+        statusCode: httpStatus.CREATED,
+        data: headerSkill
+    })
+} )
+
+export const updateHeaderSkill = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user;
+    const id = req.params.id;
+
+    const headerSkill = await updateHeaderSkillService( req.body, user.id, id );
+    
+
+    responseFunction( res, {
+        message: "updated header skill",
+        statusCode: httpStatus.CREATED,
+        data: headerSkill
+    })
+} )
+
+// homepage stat
+export const createHeaderStat = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user
+
+    const newHeader = await createHeaderStatService( req.body, user.id )
+    
+    responseFunction( res, {
+        message: "created header stats",
+        statusCode: httpStatus.CREATED,
+        data:newHeader
+    })
+} )
+
+export const updateHeaderStat = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user
+    const id = req.params.id
+
+    const updateHeaderStat = await updateHeaderStatService( req.body, user.id, id )
+    
+    responseFunction( res, {
+        message: "header stat updated",
+        statusCode: httpStatus.OK,
+        data: updateHeaderStat
+    })
+} )
+
+//  Create Education
+export const createEducation = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user;
+
+    const newEducation = await createEducationService( req.body, user.id );
+
+    responseFunction( res, {
+        message: "Education created successfully",
+        statusCode: httpStatus.CREATED,
+        data: newEducation,
+    } );
+} );
+
+// Update Education
+export const updateEducation = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user;
+    const id = req.params.id;
+
+    const updatedEducation = await updateEducationService( req.body, Number( id ), user.id );
+
+    responseFunction( res, {
+        message: "Education updated successfully",
+        statusCode: httpStatus.OK,
+        data: updatedEducation,
+    } );
+} );
+
+
+export const createExperience = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user;
+
+    const newExperience = await createExperienceService( req.body, user.id );
+
+    responseFunction( res, {
+        message: "Experience created successfully",
+        statusCode: httpStatus.CREATED,
+        data: newExperience,
+    } );
+} );
+
+// Update Experience
+export const updateExperience = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const user = req.user;
+    const id = req.params.id;
+
+    const updatedExperience = await updateExperienceService( req.body, Number( id ), user.id );
+
+    responseFunction( res, {
+        message: "Experience updated successfully",
+        statusCode: httpStatus.OK,
+        data: updatedExperience,
+    } );
+} );

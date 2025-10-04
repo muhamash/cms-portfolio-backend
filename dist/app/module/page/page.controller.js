@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHomePageData = exports.createHomePageData = exports.getHomePageData = exports.updateSkills = exports.createSkills = exports.updateSocialLinks = exports.createSocialLinks = exports.updatedPersonalInfo = exports.createPersonalInfo = exports.getPersonalInfo = void 0;
+exports.updateExperience = exports.createExperience = exports.updateEducation = exports.createEducation = exports.updateHeaderStat = exports.createHeaderStat = exports.updateHeaderSkill = exports.createHeaderSkill = exports.updateHomePageData = exports.createHomePageData = exports.getHomePageData = exports.updateSkills = exports.createSkills = exports.updateSocialLinks = exports.createSocialLinks = exports.updatedPersonalInfo = exports.createPersonalInfo = exports.getPersonalInfo = void 0;
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const getPrisma_1 = require("../../../config/db/getPrisma");
 const App_error_1 = require("../../../config/errors/App.error");
@@ -129,5 +129,86 @@ exports.updateHomePageData = (0, controller_util_1.asyncHandler)(async (req, res
         message: "updated home page data",
         statusCode: http_status_codes_1.default.OK,
         data: updateHome
+    });
+});
+// header skill
+exports.createHeaderSkill = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const headerSkill = await (0, page_service_1.createHeaderSkillService)(req.body, user.id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "created header skill",
+        statusCode: http_status_codes_1.default.CREATED,
+        data: headerSkill
+    });
+});
+exports.updateHeaderSkill = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const id = req.params.id;
+    const headerSkill = await (0, page_service_1.updateHeaderSkillService)(req.body, user.id, id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "updated header skill",
+        statusCode: http_status_codes_1.default.CREATED,
+        data: headerSkill
+    });
+});
+// homepage stat
+exports.createHeaderStat = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const newHeader = await (0, page_service_1.createHeaderStatService)(req.body, user.id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "created header stats",
+        statusCode: http_status_codes_1.default.CREATED,
+        data: newHeader
+    });
+});
+exports.updateHeaderStat = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const id = req.params.id;
+    const updateHeaderStat = await (0, page_service_1.updateHeaderStatService)(req.body, user.id, id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "header stat updated",
+        statusCode: http_status_codes_1.default.OK,
+        data: updateHeaderStat
+    });
+});
+//  Create Education
+exports.createEducation = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const newEducation = await (0, page_service_1.createEducationService)(req.body, user.id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "Education created successfully",
+        statusCode: http_status_codes_1.default.CREATED,
+        data: newEducation,
+    });
+});
+// Update Education
+exports.updateEducation = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const id = req.params.id;
+    const updatedEducation = await (0, page_service_1.updateEducationService)(req.body, Number(id), user.id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "Education updated successfully",
+        statusCode: http_status_codes_1.default.OK,
+        data: updatedEducation,
+    });
+});
+exports.createExperience = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const newExperience = await (0, page_service_1.createExperienceService)(req.body, user.id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "Experience created successfully",
+        statusCode: http_status_codes_1.default.CREATED,
+        data: newExperience,
+    });
+});
+// Update Experience
+exports.updateExperience = (0, controller_util_1.asyncHandler)(async (req, res) => {
+    const user = req.user;
+    const id = req.params.id;
+    const updatedExperience = await (0, page_service_1.updateExperienceService)(req.body, Number(id), user.id);
+    (0, controller_util_1.responseFunction)(res, {
+        message: "Experience updated successfully",
+        statusCode: http_status_codes_1.default.OK,
+        data: updatedExperience,
     });
 });

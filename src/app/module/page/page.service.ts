@@ -1,7 +1,7 @@
 import httpStatus from "http-status-codes";
 import { myPrisma } from "../../../config/db/getPrisma";
 import { AppError } from "../../../config/errors/App.error";
-import { HomePageTypes, PersonalInfoInput, SkillTypes, SocialLinkTypes, UpdateHomePageTypes, UpdatePersonalInfo, UpdateSkillTypes, UpdateSocialLinkTypes } from "./page.type";
+import { CreateEducationInput, CreateExperienceInput, HeaderSkillTypes, HeaderStatsType, HomePageTypes, PersonalInfoInput, SkillTypes, SocialLinkTypes, UpdateEducationInput, UpdateExperienceInput, UpdateHeaderStatsType, UpdateHomePageTypes, UpdatePersonalInfo, UpdateSkillTypes, UpdateSocialLinkTypes } from "./page.type";
 
 export const personalInfoService = async (
     payload: PersonalInfoInput,
@@ -55,7 +55,8 @@ export const updatePersonalInfoService = async ( payload: UpdatePersonalInfo,
 
     const existingPersonalInfo = await myPrisma.personalInfo.findUnique( {
         where: {
-            id: Number(id)
+            id: Number( id ),
+            userId: userId
         }
     } ) 
     
@@ -328,3 +329,348 @@ export const updateHomepageService = async (payload: UpdateHomePageTypes, userId
 
     return updateHomePage
 }
+
+
+// header skill
+export const createHeaderSkillService = async (
+    payload: HeaderSkillTypes,
+    userId: number
+) =>
+{
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+        include: { HomePage: true },
+    } );
+
+    if ( !personalInfo || !personalInfo.HomePage )
+    {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            "Homepage not found for this user"
+        );
+    }
+
+    const newSkill = await myPrisma.headerSkill.create( {
+        data: {
+            skill: payload.skill,
+            homePage: {
+                connect: { id: Number( personalInfo.HomePage.id ) }
+            }
+        },
+    } );
+
+    if ( !newSkill )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Failed to create new skill")
+    }
+
+    return newSkill;
+};
+
+export const updateHeaderSkillService = async (
+    payload: HeaderSkillTypes,
+    userId: number,
+    id: string
+) =>
+{
+    const numericId = Number( id );
+
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, " ID must be a valid number." );
+    }
+
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+        include: { HomePage: true },
+    } );
+
+    if ( !personalInfo || !personalInfo.HomePage )
+    {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            "Homepage not found for this user"
+        );
+    }
+
+    const skillExists = await myPrisma.headerSkill.findUnique( {
+        where: { id: numericId },
+    } );
+
+    if ( !skillExists )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Header skill not found" );
+    }
+
+    const updatedSkill = await myPrisma.headerSkill.update( {
+        where: { id : numericId },
+        data: {
+            skill: payload.skill ?? skillExists.skill,
+            homePage: {
+                connect: { id: Number( personalInfo.HomePage.id ) }
+            }
+        },
+    } );
+
+    if ( !updatedSkill )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Failed to update expectation failed")
+    }
+
+    return updatedSkill;
+};
+
+// homepage sats
+export const createHeaderStatService = async (
+    payload: HeaderStatsType,
+    userId: number
+) =>
+{
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+        include: { HomePage: true },
+    } );
+
+    if ( !personalInfo || !personalInfo.HomePage )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Homepage not found for this user" );
+    }
+
+    const newHomepageStat = await myPrisma.homePageStat.create( {
+        data: {
+            label: payload.label,
+            value: payload.value,
+            homePage: { connect: { id: Number( personalInfo.HomePage.id ) } }
+        },
+    } );
+
+    if ( !newHomepageStat )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Unable create homepage stat")
+    }
+
+    return newHomepageStat
+};
+
+// Update HomePageStat
+export const updateHeaderStatService = async (
+    payload: UpdateHeaderStatsType,
+    userId: number,
+    id: string
+) =>
+{
+    const numericId = Number( id );
+
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, " ID must be a valid number." );
+    }
+
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+        include: { HomePage: true },
+    } );
+
+    if ( !personalInfo || !personalInfo.HomePage )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Homepage not found for this user" );
+    }
+
+    const stat = await myPrisma.homePageStat.findUnique( { where: { id: numericId } } );
+
+    if ( !stat )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Header stat not found" );
+    }
+
+    const updateHomeStat = await myPrisma.homePageStat.update( {
+        where: { id: numericId },
+        data: {
+            label: payload.label ?? stat.label,
+            value: payload.value ?? stat.value,
+            homePage: { connect: { id: Number( personalInfo.HomePage.id ) } }
+        },
+    } );
+
+    if ( !updateHomeStat )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "Unable to update homepage stat")
+    }
+    
+    return updateHomeStat
+};
+
+// Create Education
+export const createEducationService = async (
+    payload: CreateEducationInput,
+    userId: number
+) =>
+{
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+    } );
+
+    if ( !personalInfo )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Personal info not found for this user" );
+    }
+
+    const newEducation = await myPrisma.education.create( {
+        data: {
+            degree: payload.degree,
+            institute: payload.institute,
+            timeLine: payload.timeLine,
+            description: payload.description,
+            personalInfo: { connect: { id: Number( personalInfo.id ) } }
+
+        },
+    } );
+
+    if ( !newEducation )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Unable to create education" );
+    }
+
+    return newEducation;
+};
+
+// Update Education
+export const updateEducationService = async (
+    payload: UpdateEducationInput,
+    id: number,
+    userId: number
+) =>
+{
+    const numericId = Number( id );
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, "ID must be a valid number." );
+    }
+
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+    } );
+
+    if ( !personalInfo )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Personal info not found for this user" );
+    }
+
+    const existingEducation = await myPrisma.education.findUnique( {
+        where: { id: numericId },
+    } );
+
+    if ( !existingEducation )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Education record not found" );
+    }
+
+    const updatedEducation = await myPrisma.education.update( {
+        where: { id: numericId },
+        data: {
+            degree: payload.degree ?? existingEducation.degree,
+            institute: payload.institute ?? existingEducation.institute,
+            timeLine: payload.timeLine ?? existingEducation.timeLine,
+            description: payload.description ?? existingEducation.description,
+            personalInfo: { connect: { id: Number( personalInfo.id ) } }
+        },
+    } );
+
+    if ( !updatedEducation )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Unable to update education" );
+    }
+
+    return updatedEducation;
+};
+
+// Create Work Experience
+export const createExperienceService = async (
+    payload: CreateExperienceInput,
+    userId: number
+) =>
+{
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+    } );
+
+    if ( !personalInfo )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Personal info not found for this user" );
+    }
+
+    const newExperience = await myPrisma.workExperience.create( {
+        data: {
+            position: payload.position,
+            company: payload.company,
+            timeLine: payload.timeLine,
+            description: payload.description,
+            personalInfo: {
+                connect: {
+                    id: Number(personalInfo.id),
+                }
+            }
+        },
+    } );
+
+    if ( !newExperience )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Unable to create experience" );
+    }
+
+    return newExperience;
+};
+
+// Update Work Experience
+export const updateExperienceService = async (
+    payload: UpdateExperienceInput,
+    id: number,
+    userId: number
+) =>
+{
+    const numericId = Number( id );
+    if ( isNaN( numericId ) )
+    {
+        throw new AppError( httpStatus.BAD_REQUEST, "ID must be a valid number." );
+    }
+
+    const personalInfo = await myPrisma.personalInfo.findUnique( {
+        where: { userId },
+    } );
+
+    if ( !personalInfo )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Personal info not found for this user" );
+    }
+
+    const existingExperience = await myPrisma.workExperience.findUnique( {
+        where: { id: numericId },
+    } );
+
+    if ( !existingExperience )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "Experience record not found" );
+    }
+
+    const updatedExperience = await myPrisma.workExperience.update( {
+        where: { id: numericId },
+        data: {
+            position: payload.position ?? existingExperience.position,
+            company: payload.company ?? existingExperience.company,
+            timeLine: payload.timeLine ?? existingExperience.timeLine,
+            description: payload.description ?? existingExperience.description,
+            personalInfo: {
+                connect: {
+                    id: Number(personalInfo.id),
+                }
+            }
+        },
+    } );
+
+    if ( !updatedExperience )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Unable to update experience" );
+    }
+
+    return updatedExperience;
+};

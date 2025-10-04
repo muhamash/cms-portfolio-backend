@@ -109,14 +109,14 @@ model HomePage {
 
 model HeaderSkill {
   id          Int      @id @default(autoincrement())
-  skill       String
+  skill       String @unique
   homePageId  Int
   homePage    HomePage @relation(fields: [homePageId], references: [id])
 }
 
 model HomePageStat {
   id          Int      @id @default(autoincrement())
-  label       String   
+  label       String   @unique
   value       String
   
   homePageId  Int

@@ -22,3 +22,15 @@ exports.pageRoutes.patch("/update-skill/:id", checkAuth_middleware_1.checkAuth, 
 exports.pageRoutes.get("/get-home-page", page_controller_1.getHomePageData);
 exports.pageRoutes.post("/create-home-page", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.headerSchema), page_controller_1.createHomePageData);
 exports.pageRoutes.patch("/update-home-page/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateHeaderSchema), page_controller_1.updateHomePageData);
+// header skill
+exports.pageRoutes.post("/create-header-skill", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.headerSkillSchema), page_controller_1.createHeaderSkill);
+exports.pageRoutes.patch("/update-header-skill/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.headerSkillSchema), page_controller_1.updateHeaderSkill);
+// homepage Stat
+exports.pageRoutes.post("/create-header-stats", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.headerStats), page_controller_1.createHeaderStat);
+exports.pageRoutes.patch("/update-header-stats/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateHeaderStats), page_controller_1.updateHeaderStat);
+// experiences
+exports.pageRoutes.post("/create-experience", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.createExperienceSchema), page_controller_1.createExperience);
+exports.pageRoutes.patch("/update-experience/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateExperienceSchema), page_controller_1.updateExperience);
+// education
+exports.pageRoutes.post("/create-education", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.createEducationSchema), page_controller_1.createEducation);
+exports.pageRoutes.patch("/update-education/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateEducationSchema), page_controller_1.updateEducation);

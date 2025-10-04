@@ -113,3 +113,47 @@ export const headerSchema = z.object({
 export const updateHeaderSchema = headerSchema.partial().refine( ( data ) => Object.keys( data ).length > 0, {
   message: "At least one field is required to update",
 } );
+
+export const headerSkillSchema = z.object( {
+  skill: z
+    .string()
+    .min(2, "Skill name must be at least 2 characters long")
+    .max(50, "Skill name must be less than 50 characters"),
+} )
+
+export const headerStats = z.object( {
+  label: z
+    .string()
+    .min(2, "label name must be at least 2 characters long")
+    .max( 50, "label name must be less than 50 characters" ),
+  value: z
+    .string()
+    .min(2, "value name must be at least 20 characters long")
+    .max(50, "value name must be less than 50 characters"),
+} )
+
+export const updateHeaderStats = headerStats.partial().refine( ( data ) => Object.keys( data ).length > 0, {
+  message: "At least one field is required to update",
+} );
+
+export const createExperienceSchema = z.object({
+  position: z.string().min(1, "Position is required"),
+  company: z.string().min(1, "Company is required"),
+  description: z.string().optional(),
+  timeLine: z.string().min(1, "Timeline is required"),
+} );
+
+export const updateExperienceSchema = createExperienceSchema.partial().refine( ( data ) => Object.keys( data ).length > 0, {
+  message: "At least one field is required to update",
+} );
+
+export const createEducationSchema = z.object({
+  degree: z.string().min(1, "Degree is required"),
+  institute: z.string().min(1, "Institute is required"),
+  timeLine: z.string().min(1, "Timeline is required"),
+  description: z.string().optional(),
+} );
+
+export const updateEducationSchema = createEducationSchema.partial().refine( ( data ) => Object.keys( data ).length > 0, {
+  message: "At least one field is required to update",
+} );
