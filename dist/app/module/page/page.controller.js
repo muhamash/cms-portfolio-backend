@@ -20,8 +20,9 @@ exports.getPersonalInfo = (0, controller_util_1.asyncHandler)(async (req, res) =
             HomePage: true
         }
     });
+    // console.log(personalInfo)
     if (!personalInfo) {
-        throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Personal info found");
+        throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Personal info not found");
     }
     (0, controller_util_1.responseFunction)(res, {
         message: "Got personal info",
@@ -38,6 +39,7 @@ exports.createPersonalInfo = (0, controller_util_1.asyncHandler)(async (req, res
     else if (req.files && typeof req.files === "object") {
         uploadedFiles = Object.values(req.files).flat().map(f => f.path);
     }
+    // console.log( uploadedFiles, req.body, req.files )
     const createPersonalInfo = await (0, page_service_1.personalInfoService)(req.body, uploadedFiles, user.id);
     if (!createPersonalInfo) {
         throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "Unable to create personal info!!");
@@ -69,10 +71,11 @@ exports.updatedPersonalInfo = (0, controller_util_1.asyncHandler)(async (req, re
 // social links
 exports.createSocialLinks = (0, controller_util_1.asyncHandler)(async (req, res) => {
     const user = req.user;
+    // console.log("payload", req.body)
     const socialLink = await (0, page_service_1.createSocialLinkService)(req.body, user.id);
     (0, controller_util_1.responseFunction)(res, {
         message: "Social links created",
-        statusCode: http_status_codes_1.default.OK,
+        statusCode: http_status_codes_1.default.CREATED,
         data: socialLink
     });
 });

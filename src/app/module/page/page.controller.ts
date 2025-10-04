@@ -16,11 +16,13 @@ export const getPersonalInfo = asyncHandler( async ( req: Request, res: Response
             education: true,
             HomePage: true
         }
-    });
+    } );
+    
+    // console.log(personalInfo)
 
     if ( !personalInfo )
     {
-        throw new AppError(httpStatus.NOT_FOUND, "Personal info found")
+        throw new AppError(httpStatus.NOT_FOUND, "Personal info not found")
     }
 
     responseFunction( res, {
@@ -45,6 +47,8 @@ export const createPersonalInfo = asyncHandler( async ( req: Request, res: Respo
         uploadedFiles = Object.values( req.files ).flat().map( f => f.path );
     }
 
+    // console.log( uploadedFiles, req.body, req.files )
+    
     const createPersonalInfo = await personalInfoService( req.body, uploadedFiles, user.id )
     
     if ( !createPersonalInfo )
@@ -92,11 +96,13 @@ export const createSocialLinks = asyncHandler( async ( req: Request, res: Respon
 {
     const user = req.user;
 
+    // console.log("payload", req.body)
+
     const socialLink = await createSocialLinkService( req.body, user.id )
     
     responseFunction( res, {
         message: "Social links created",
-        statusCode: httpStatus.OK,
+        statusCode: httpStatus.CREATED,
         data: socialLink
     } )
 

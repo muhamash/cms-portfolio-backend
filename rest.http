@@ -103,3 +103,12 @@
 # {
 #   "title": "asd okaasdasdasasdsad"
 # }
+
+
+# POST http://localhost:3000/v1/pages/create-social-links
+# Content-Type: application/json
+
+# {
+#   "platform": "asdasf",
+#   "url": "http://localhost:3001/dashboard/manage-profile"
+# }

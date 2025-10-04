@@ -1,8 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
   binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
-
 }
 
 datasource db {
@@ -11,36 +10,30 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  name         String?
+  password     String
+  blogs        Blog[]
   personalInfo PersonalInfo?
-
-  // relations
-  blogs    Blog[]
-  projects Project[]
+  projects     Project[]
 }
 
 model PersonalInfo {
-  id        Int      @id @default(autoincrement())
-  image     String
-  name      String
-  address   String
-  phone     String
-  email     String   @unique
-  title     String
-
-  // relations
-  userId Int @unique
-  user   User @relation(fields: [userId], references: [id])
-
-  socialLinks   SocialLink[]
-  skills        Skill[]
-  experiences   WorkExperience[]
-  education     Education[]
-  HomePage      HomePage?
+  id          Int              @id @default(autoincrement())
+  image       String
+  name        String
+  address     String
+  phone       String
+  email       String           @unique
+  title       String
+  userId      Int              @unique
+  education   Education[]
+  HomePage    HomePage?
+  user        User             @relation(fields: [userId], references: [id])
+  skills      Skill[]
+  socialLinks SocialLink[]
+  experiences WorkExperience[]
 }
 
 model Blog {
@@ -48,14 +41,12 @@ model Blog {
   title     String   @unique
   content   String
   image     String?
-  slug      String?   @unique
+  slug      String?  @unique
   tags      String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // relation
-  authorId Int
-  author   User @relation(fields: [authorId], references: [id])
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
 }
 
 model Project {
@@ -63,85 +54,76 @@ model Project {
   title       String   @unique
   description String
   image       String?
-  slug        String?   @unique
+  slug        String?  @unique
   tags        String[]
   githubLink  String   @unique
   liveLink    String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  // relation
-  ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  owner       User     @relation(fields: [ownerId], references: [id])
 }
 
 model SocialLink {
-  id             Int    @id @default(autoincrement())
-  platform       String 
-  url            String @unique
-  
+  id             Int          @id @default(autoincrement())
+  platform       String
+  url            String       @unique
   personalInfoId Int
   personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
 }
 
 model Skill {
-  id             Int    @id @default(autoincrement())
-  name           String @unique
+  id             Int          @id @default(autoincrement())
+  name           String       @unique
   personalInfoId Int
   personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
 }
 
 model HomePage {
-  id                  Int    @id @default(autoincrement())
+  id                  Int            @id @default(autoincrement())
   headerText          String
   headerSubTitle      String
   headerAboutText     String
   headerAboutSubText  String
   headerAboutAddress  String
   headerAboutSubTitle String
-
-  personalInfoId Int @unique
-  personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
-  
-  headerSkills HeaderSkill[]
-  stats        HomePageStat[]
+  personalInfoId      Int            @unique
+  headerSkills        HeaderSkill[]
+  personalInfo        PersonalInfo   @relation(fields: [personalInfoId], references: [id])
+  stats               HomePageStat[]
 }
 
 model HeaderSkill {
-  id          Int      @id @default(autoincrement())
-  skill       String @unique
-  homePageId  Int
-  homePage    HomePage @relation(fields: [homePageId], references: [id])
+  id         Int      @id @default(autoincrement())
+  skill      String   @unique
+  homePageId Int
+  homePage   HomePage @relation(fields: [homePageId], references: [id])
 }
 
 model HomePageStat {
-  id          Int      @id @default(autoincrement())
-  label       String   @unique
-  value       String
-  
-  homePageId  Int
-  homePage    HomePage @relation(fields: [homePageId], references: [id])
+  id         Int      @id @default(autoincrement())
+  label      String   @unique
+  value      String
+  homePageId Int
+  homePage   HomePage @relation(fields: [homePageId], references: [id])
 }
 
 model WorkExperience {
-  id             Int    @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   position       String
   company        String
   description    String?
-  timeLine       String 
-
+  timeLine       String
   personalInfoId Int
   personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
 }
 
 model Education {
-  id             Int    @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   degree         String
   institute      String
   timeLine       String
   description    String?
-
   personalInfoId Int
   personalInfo   PersonalInfo @relation(fields: [personalInfoId], references: [id])
 }
-
