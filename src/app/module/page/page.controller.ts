@@ -8,7 +8,15 @@ import { createEducationService, createExperienceService, createHeaderSkillServi
 // profile info 
 export const getPersonalInfo = asyncHandler( async ( req: Request, res: Response ) =>
 {
-    const personalInfo = await myPrisma.personalInfo.findFirst();
+    const personalInfo = await myPrisma.personalInfo.findFirst( {
+        include: {
+            socialLinks: true,
+            skills: true,
+            experiences: true,
+            education: true,
+            HomePage: true
+        }
+    });
 
     if ( !personalInfo )
     {
@@ -110,6 +118,44 @@ export const updateSocialLinks = asyncHandler( async ( req: Request, res: Respon
 
 } )
 
+export const deleteSocialLinks = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
+
+    if ( !Number( id ) )
+    {
+        throw new AppError(httpStatus.NOT_ACCEPTABLE, "id must be numeric")
+    }
+
+    const existing = await myPrisma.socialLink.findUnique( {
+        where: {
+            id: Number( id )
+        }
+    } );
+
+    if ( !existing )
+    {
+        throw new AppError(httpStatus.NOT_FOUND, "target not found!")
+    }
+
+    const deleteSocialLinks = await myPrisma.socialLink.delete( {
+        where: {
+            id: Number(id)
+        }
+    } )
+    
+    if ( !deleteSocialLinks )
+    {
+        throw new AppError(httpStatus.EXPECTATION_FAILED, "unable to delete the target!")
+    }
+
+    responseFunction( res, {
+        message: "Social link deleted",
+        statusCode: httpStatus.OK,
+        data: deleteSocialLinks
+    })
+})
+
 // skills
 export const createSkills = asyncHandler( async ( req: Request, res: Response ) =>
 {
@@ -138,6 +184,44 @@ export const updateSkills = asyncHandler( async ( req: Request, res: Response ) 
         data: updateSkill
     } )
 
+} );
+
+export const deleteSkill = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
+
+    if ( !Number( id ) )
+    {
+        throw new AppError( httpStatus.NOT_ACCEPTABLE, "id must be numeric" )
+    }
+
+    const existing = await myPrisma.skill.findUnique( {
+        where: {
+            id: Number( id )
+        }
+    } );
+
+    if ( !existing )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "target not found!" )
+    }
+
+    const deleteSkill = await myPrisma.socialLink.delete( {
+        where: {
+            id: Number( id )
+        }
+    } )
+    
+    if ( !deleteSkill )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "unable to delete the target!" )
+    }
+
+    responseFunction( res, {
+        message: "skill link deleted",
+        statusCode: httpStatus.OK,
+        data: deleteSkill
+    } )
 } );
 
 // home page
@@ -219,6 +303,44 @@ export const updateHeaderSkill = asyncHandler( async ( req: Request, res: Respon
     })
 } )
 
+export const deleteHeaderSkill = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
+
+    if ( !Number( id ) )
+    {
+        throw new AppError( httpStatus.NOT_ACCEPTABLE, "id must be numeric" )
+    }
+
+    const existing = await myPrisma.headerSkill.findUnique( {
+        where: {
+            id: Number( id )
+        }
+    } );
+
+    if ( !existing )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "target not found!" )
+    }
+
+    const deleteSkill = await myPrisma.headerSkill.delete( {
+        where: {
+            id: Number( id )
+        }
+    } )
+    
+    if ( !deleteSkill )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "unable to delete the target!" )
+    }
+
+    responseFunction( res, {
+        message: "header skill deleted",
+        statusCode: httpStatus.OK,
+        data: deleteSkill
+    } )
+} );
+
 // homepage stat
 export const createHeaderStat = asyncHandler( async ( req: Request, res: Response ) =>
 {
@@ -246,6 +368,44 @@ export const updateHeaderStat = asyncHandler( async ( req: Request, res: Respons
         data: updateHeaderStat
     })
 } )
+
+export const deleteHomePageStat = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
+
+    if ( !Number( id ) )
+    {
+        throw new AppError( httpStatus.NOT_ACCEPTABLE, "id must be numeric" )
+    }
+
+    const existing = await myPrisma.homePageStat.findUnique( {
+        where: {
+            id: Number( id )
+        }
+    } );
+
+    if ( !existing )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "target not found!" )
+    }
+
+    const deleteHomePageStat = await myPrisma.homePageStat.delete( {
+        where: {
+            id: Number( id )
+        }
+    } )
+    
+    if ( !deleteHomePageStat )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "unable to delete the target!" )
+    }
+
+    responseFunction( res, {
+        message: "Home page stat deleted",
+        statusCode: httpStatus.OK,
+        data: deleteHomePageStat
+    } )
+} );
 
 //  Create Education
 export const createEducation = asyncHandler( async ( req: Request, res: Response ) =>
@@ -276,7 +436,45 @@ export const updateEducation = asyncHandler( async ( req: Request, res: Response
     } );
 } );
 
+export const deleteEducation = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
 
+    if ( !Number( id ) )
+    {
+        throw new AppError( httpStatus.NOT_ACCEPTABLE, "id must be numeric" )
+    }
+
+    const existing = await myPrisma.education.findUnique( {
+        where: {
+            id: Number( id )
+        }
+    } );
+
+    if ( !existing )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "target not found!" )
+    }
+
+    const deleteEducation = await myPrisma.education.delete( {
+        where: {
+            id: Number( id )
+        }
+    } )
+    
+    if ( !deleteEducation )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "unable to delete the target!" )
+    }
+
+    responseFunction( res, {
+        message: "education deleted",
+        statusCode: httpStatus.OK,
+        data: deleteEducation
+    } )
+} );
+
+// create experience
 export const createExperience = asyncHandler( async ( req: Request, res: Response ) =>
 {
     const user = req.user;
@@ -303,4 +501,42 @@ export const updateExperience = asyncHandler( async ( req: Request, res: Respons
         statusCode: httpStatus.OK,
         data: updatedExperience,
     } );
+} );
+
+export const deleteExperience = asyncHandler( async ( req: Request, res: Response ) =>
+{
+    const id = req.params.id
+
+    if ( !Number( id ) )
+    {
+        throw new AppError( httpStatus.NOT_ACCEPTABLE, "id must be numeric" )
+    }
+
+    const existing = await myPrisma.workExperience.findUnique( {
+        where: {
+            id: Number( id )
+        }
+    } );
+
+    if ( !existing )
+    {
+        throw new AppError( httpStatus.NOT_FOUND, "target not found!" )
+    }
+
+    const deleteExperience = await myPrisma.workExperience.delete( {
+        where: {
+            id: Number( id )
+        }
+    } )
+    
+    if ( !deleteExperience )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "unable to delete the target!" )
+    }
+
+    responseFunction( res, {
+        message: "workExperience deleted",
+        statusCode: httpStatus.OK,
+        data: deleteExperience
+    } )
 } );
