@@ -122,7 +122,7 @@ exports.createSkills = (0, controller_util_1.asyncHandler)(async (req, res) => {
     const createSkill = await (0, page_service_1.createSkillService)(req.body, user.id);
     (0, controller_util_1.responseFunction)(res, {
         message: "skill  created",
-        statusCode: http_status_codes_1.default.OK,
+        statusCode: http_status_codes_1.default.CREATED,
         data: createSkill
     });
 });
@@ -138,6 +138,7 @@ exports.updateSkills = (0, controller_util_1.asyncHandler)(async (req, res) => {
 });
 exports.deleteSkill = (0, controller_util_1.asyncHandler)(async (req, res) => {
     const id = req.params.id;
+    console.log(id);
     if (!Number(id)) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_ACCEPTABLE, "id must be numeric");
     }
@@ -149,18 +150,19 @@ exports.deleteSkill = (0, controller_util_1.asyncHandler)(async (req, res) => {
     if (!existing) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "target not found!");
     }
-    const deleteSkill = await getPrisma_1.myPrisma.socialLink.delete({
+    // console.log(existing)
+    const deletedSkill = await getPrisma_1.myPrisma.skill.delete({
         where: {
             id: Number(id)
         }
     });
-    if (!deleteSkill) {
+    if (!deletedSkill) {
         throw new App_error_1.AppError(http_status_codes_1.default.EXPECTATION_FAILED, "unable to delete the target!");
     }
     (0, controller_util_1.responseFunction)(res, {
         message: "skill link deleted",
         statusCode: http_status_codes_1.default.OK,
-        data: deleteSkill
+        data: deletedSkill
     });
 });
 // home page
@@ -321,6 +323,7 @@ exports.deleteEducation = (0, controller_util_1.asyncHandler)(async (req, res) =
             id: Number(id)
         }
     });
+    console.log(id, existing);
     if (!existing) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "target not found!");
     }

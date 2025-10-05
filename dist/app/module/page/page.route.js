@@ -18,7 +18,7 @@ exports.pageRoutes.patch("/update-social-links/:id", checkAuth_middleware_1.chec
 exports.pageRoutes.delete("/delete-social-links/:id", checkAuth_middleware_1.checkAuth, page_controller_1.deleteSocialLinks);
 // skills
 exports.pageRoutes.post("/create-skill", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.skillSchema), page_controller_1.createSkills);
-exports.pageRoutes.patch("/update-skill/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateSkillSchema), page_controller_1.updateSkills);
+exports.pageRoutes.patch("/update-skill/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.skillSchema), page_controller_1.updateSkills);
 exports.pageRoutes.delete("/delete-skill/:id", checkAuth_middleware_1.checkAuth, page_controller_1.deleteSkill);
 // home page
 exports.pageRoutes.get("/get-home-page", page_controller_1.getHomePageData);
@@ -35,8 +35,8 @@ exports.pageRoutes.delete("/delete-header-stats/:id", checkAuth_middleware_1.che
 // experiences
 exports.pageRoutes.post("/create-experience", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.createExperienceSchema), page_controller_1.createExperience);
 exports.pageRoutes.patch("/update-experience/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateExperienceSchema), page_controller_1.updateExperience);
-exports.pageRoutes.delete("/delete-experience/:id", checkAuth_middleware_1.checkAuth, page_controller_1.deleteEducation);
+exports.pageRoutes.delete("/delete-experience/:id", checkAuth_middleware_1.checkAuth, page_controller_1.deleteExperience);
 // education
 exports.pageRoutes.post("/create-education", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.createEducationSchema), page_controller_1.createEducation);
 exports.pageRoutes.patch("/update-education/:id", checkAuth_middleware_1.checkAuth, (0, validateRequest_middleware_1.validateRequest)(page_validation_1.updateEducationSchema), page_controller_1.updateEducation);
-exports.pageRoutes.delete("/delete-education/:id", checkAuth_middleware_1.checkAuth, page_controller_1.deleteExperience);
+exports.pageRoutes.delete("/delete-education/:id", checkAuth_middleware_1.checkAuth, page_controller_1.deleteEducation);

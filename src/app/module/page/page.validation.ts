@@ -71,7 +71,6 @@ export const skillSchema = z.object({
     .min(2, "Skill name must be at least 2 characters long")
     .max(50, "Skill name must be less than 50 characters"),
   
-  personalInfoId: z.number().int().positive("Invalid personalInfoId"),
 } );
 
 export const updateSkillSchema = skillSchema.partial().refine( ( data ) => Object.keys( data ).length > 0, {

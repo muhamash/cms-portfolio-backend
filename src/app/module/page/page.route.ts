@@ -3,7 +3,7 @@ import { multerUpload } from "../../../config/image/multer.config";
 import { checkAuth } from "../../middleware/checkAuth.middleware";
 import { validateRequest } from "../../middleware/validateRequest.middleware";
 import { createEducation, createExperience, createHeaderSkill, createHeaderStat, createHomePageData, createPersonalInfo, createSkills, createSocialLinks, deleteEducation, deleteExperience, deleteHeaderSkill, deleteHomePageStat, deleteSkill, deleteSocialLinks, getHomePageData, getPersonalInfo, updatedPersonalInfo, updateEducation, updateExperience, updateHeaderSkill, updateHeaderStat, updateHomePageData, updateSkills, updateSocialLinks } from "./page.controller";
-import { createEducationSchema, createExperienceSchema, headerSchema, headerSkillSchema, headerStats, personalInfoSchema, skillSchema, socialLinkSchema, updateEducationSchema, updateExperienceSchema, updateHeaderSchema, updateHeaderStats, updatePersonalInfo, updateSkillSchema, updateSocialSchema } from "./page.validation";
+import { createEducationSchema, createExperienceSchema, headerSchema, headerSkillSchema, headerStats, personalInfoSchema, skillSchema, socialLinkSchema, updateEducationSchema, updateExperienceSchema, updateHeaderSchema, updateHeaderStats, updatePersonalInfo, updateSocialSchema } from "./page.validation";
 
 
 export const pageRoutes = Router();
@@ -25,7 +25,7 @@ pageRoutes.delete( "/delete-social-links/:id", checkAuth, deleteSocialLinks )
 // skills
 pageRoutes.post( "/create-skill", checkAuth, validateRequest(skillSchema), createSkills )
 
-pageRoutes.patch( "/update-skill/:id", checkAuth, validateRequest( updateSkillSchema ), updateSkills )
+pageRoutes.patch( "/update-skill/:id", checkAuth, validateRequest( skillSchema ), updateSkills )
 
 pageRoutes.delete( "/delete-skill/:id", checkAuth, deleteSkill )
 
@@ -55,11 +55,11 @@ pageRoutes.post( "/create-experience", checkAuth, validateRequest( createExperie
 
 pageRoutes.patch( "/update-experience/:id", checkAuth, validateRequest( updateExperienceSchema ), updateExperience )
 
-pageRoutes.delete( "/delete-experience/:id", checkAuth, deleteEducation )
+pageRoutes.delete( "/delete-experience/:id", checkAuth, deleteExperience )
 
 // education
 pageRoutes.post( "/create-education", checkAuth, validateRequest( createEducationSchema ), createEducation )
 
 pageRoutes.patch( "/update-education/:id", checkAuth, validateRequest( updateEducationSchema ), updateEducation )
 
-pageRoutes.delete( "/delete-education/:id", checkAuth, deleteExperience )
+pageRoutes.delete( "/delete-education/:id", checkAuth, deleteEducation )

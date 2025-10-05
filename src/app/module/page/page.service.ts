@@ -217,9 +217,11 @@ export const updateSkillService = async ( payload: UpdateSkillTypes, userId: Num
         throw new AppError(httpStatus.NOT_FOUND, "Skill not found")
     }
 
+    console.log( userId )
+    
     const personalInfo = await myPrisma.personalInfo.findUnique( {
         where: { 
-            id: numericId
+            id: Number(userId)
          }
     } );
 

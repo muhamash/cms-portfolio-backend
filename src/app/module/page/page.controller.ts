@@ -171,7 +171,7 @@ export const createSkills = asyncHandler( async ( req: Request, res: Response ) 
     
     responseFunction( res, {
         message: "skill  created",
-        statusCode: httpStatus.OK,
+        statusCode: httpStatus.CREATED,
         data: createSkill
     } )
 
@@ -195,6 +195,7 @@ export const updateSkills = asyncHandler( async ( req: Request, res: Response ) 
 export const deleteSkill = asyncHandler( async ( req: Request, res: Response ) =>
 {
     const id = req.params.id
+    console.log(id)
 
     if ( !Number( id ) )
     {
@@ -212,13 +213,15 @@ export const deleteSkill = asyncHandler( async ( req: Request, res: Response ) =
         throw new AppError( httpStatus.NOT_FOUND, "target not found!" )
     }
 
-    const deleteSkill = await myPrisma.socialLink.delete( {
+    // console.log(existing)
+
+    const deletedSkill = await myPrisma.skill.delete( {
         where: {
             id: Number( id )
         }
     } )
     
-    if ( !deleteSkill )
+    if ( !deletedSkill )
     {
         throw new AppError( httpStatus.EXPECTATION_FAILED, "unable to delete the target!" )
     }
@@ -226,7 +229,7 @@ export const deleteSkill = asyncHandler( async ( req: Request, res: Response ) =
     responseFunction( res, {
         message: "skill link deleted",
         statusCode: httpStatus.OK,
-        data: deleteSkill
+        data: deletedSkill
     } )
 } );
 
@@ -456,6 +459,8 @@ export const deleteEducation = asyncHandler( async ( req: Request, res: Response
             id: Number( id )
         }
     } );
+
+    console.log(id, existing)
 
     if ( !existing )
     {

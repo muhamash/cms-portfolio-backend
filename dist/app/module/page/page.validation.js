@@ -61,7 +61,6 @@ exports.skillSchema = zod_1.z.object({
         .string()
         .min(2, "Skill name must be at least 2 characters long")
         .max(50, "Skill name must be less than 50 characters"),
-    personalInfoId: zod_1.z.number().int().positive("Invalid personalInfoId"),
 });
 exports.updateSkillSchema = exports.skillSchema.partial().refine((data) => Object.keys(data).length > 0, {
     message: "At least one field is required to update",

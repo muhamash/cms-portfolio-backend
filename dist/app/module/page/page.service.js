@@ -155,9 +155,10 @@ const updateSkillService = async (payload, userId, id) => {
     if (!existing) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Skill not found");
     }
+    console.log(userId);
     const personalInfo = await getPrisma_1.myPrisma.personalInfo.findUnique({
         where: {
-            id: numericId
+            id: Number(userId)
         }
     });
     if (!personalInfo) {
