@@ -236,8 +236,15 @@ export const deleteSkill = asyncHandler( async ( req: Request, res: Response ) =
 // home page
 export const getHomePageData = asyncHandler( async ( req: Request, res: Response ) =>
 {
-    console.log( "get home data" )
-    const homePageData = await myPrisma.homePage.findFirst();
+    // console.log( "get home data" )
+
+    const homePageData = await myPrisma.homePage.findFirst( {
+        include: {
+            headerSkills: true,
+            personalInfo: true,
+            stats: true
+        }
+    } );
 
     if ( !homePageData )
     {
@@ -307,7 +314,7 @@ export const updateHeaderSkill = asyncHandler( async ( req: Request, res: Respon
 
     responseFunction( res, {
         message: "updated header skill",
-        statusCode: httpStatus.CREATED,
+        statusCode: httpStatus.OK,
         data: headerSkill
     })
 } )

@@ -87,6 +87,7 @@ model HomePage {
   headerAboutSubText  String
   headerAboutAddress  String
   headerAboutSubTitle String
+  
   personalInfoId      Int            @unique
   headerSkills        HeaderSkill[]
   personalInfo        PersonalInfo   @relation(fields: [personalInfoId], references: [id])

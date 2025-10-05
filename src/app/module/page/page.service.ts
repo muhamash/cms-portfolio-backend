@@ -304,6 +304,8 @@ export const updateHomepageService = async (payload: UpdateHomePageTypes, userId
         where: { userId }
     } );
 
+    console.log(userId, personalInfo)
+
     if ( !personalInfo )
     {
         throw new AppError( httpStatus.NOT_FOUND, "Personal info not found for this user" );
@@ -438,6 +440,11 @@ export const createHeaderStatService = async (
         throw new AppError( httpStatus.NOT_FOUND, "Homepage not found for this user" );
     }
 
+    if ( !Number( payload.value ) )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Stat values should be numeric" );
+    }
+
     const newHomepageStat = await myPrisma.homePageStat.create( {
         data: {
             label: payload.label,
@@ -478,6 +485,11 @@ export const updateHeaderStatService = async (
         throw new AppError( httpStatus.NOT_FOUND, "Homepage not found for this user" );
     }
 
+    if ( !Number( payload.value ) )
+    {
+        throw new AppError( httpStatus.EXPECTATION_FAILED, "Stat values should be numeric" );
+    }
+    
     const stat = await myPrisma.homePageStat.findUnique( { where: { id: numericId } } );
 
     if ( !stat )

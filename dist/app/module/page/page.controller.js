@@ -167,8 +167,14 @@ exports.deleteSkill = (0, controller_util_1.asyncHandler)(async (req, res) => {
 });
 // home page
 exports.getHomePageData = (0, controller_util_1.asyncHandler)(async (req, res) => {
-    console.log("get home data");
-    const homePageData = await getPrisma_1.myPrisma.homePage.findFirst();
+    // console.log( "get home data" )
+    const homePageData = await getPrisma_1.myPrisma.homePage.findFirst({
+        include: {
+            headerSkills: true,
+            personalInfo: true,
+            stats: true
+        }
+    });
     if (!homePageData) {
         throw new App_error_1.AppError(http_status_codes_1.default.NOT_FOUND, "Home page data not found");
     }
@@ -214,7 +220,7 @@ exports.updateHeaderSkill = (0, controller_util_1.asyncHandler)(async (req, res)
     const headerSkill = await (0, page_service_1.updateHeaderSkillService)(req.body, user.id, id);
     (0, controller_util_1.responseFunction)(res, {
         message: "updated header skill",
-        statusCode: http_status_codes_1.default.CREATED,
+        statusCode: http_status_codes_1.default.OK,
         data: headerSkill
     });
 });
